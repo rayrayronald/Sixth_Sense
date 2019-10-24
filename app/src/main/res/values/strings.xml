@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Sixth_sense</string>
+    <string name="edit_messages">Enter a message</string>
+    <string name="button_send">Send</string>
+</resources>
