@@ -15,12 +15,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    /** Called when the user taps the Send button */
+    /** Called when the user taps the Connect button */
     public void startScan(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
+    }
+
+
+
+    /** Called when the user taps the Settings button */
+    public void SubSet(View view) {
+        Intent sndintent = new Intent(this, SubSettingActivity.class);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String message = editText.getText().toString();
+        sndintent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(sndintent);
     }
 }
