@@ -11,25 +11,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.opencsv.CSVReader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.FileReader;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-import android.content.Context;
-import android.widget.Toast;
+
 
 
 public class Scan extends AppCompatActivity {
@@ -72,7 +56,72 @@ public class Scan extends AppCompatActivity {
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Potential (V)");
         graph.getGridLabelRenderer().setVerticalAxisTitle("Current (A)");
 
-        /*InputStream inputStream = getResources().openRawResource(R.raw.cv_plot);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // we're going to simulate real time with thread that append data to the graph
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                // we add 100 new entries
+                for (int i = 0; i < 50; i++) {
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            addEntry();
+                        }
+                    });
+
+                    // sleep to slow down the add of entries
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        // manage error ...
+                    }
+                }
+            }
+        }).start();
+    }
+
+    // add random data to graph
+    private void addEntry() {
+        // here, we choose to display max 10 points on the viewport and we scroll to end
+        //series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
+        series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
+
+    }
+
+}
+
+
+
+
+        /*
+
+
+import com.opencsv.CSVReader;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.FileReader;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import android.content.Context;
+import android.widget.Toast;
+
+        InputStream inputStream = getResources().openRawResource(R.raw.cv_plot);
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(inputStream, Charset.forName("UTF-8"))
         );
@@ -96,9 +145,9 @@ public class Scan extends AppCompatActivity {
 
         } catch (IOException e) {
 
-        }*/
+        }
 
-    }
+    }*/
         /*ItemArrayAdapter itemArrayAdapter = new ItemArrayAdapter(getApplicationContext(), R.layout.activity_scan);
 
         InputStream inputStream = getResources().openRawResource(R.raw.cv_plot);
@@ -197,41 +246,3 @@ public class Scan extends AppCompatActivity {
 
 }*/
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // we're going to simulate real time with thread that append data to the graph
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                // we add 100 new entries
-                for (int i = 0; i < 50; i++) {
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            addEntry();
-                        }
-                    });
-
-                    // sleep to slow down the add of entries
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        // manage error ...
-                    }
-                }
-            }
-        }).start();
-    }
-
-    // add random data to graph
-    private void addEntry() {
-        // here, we choose to display max 10 points on the viewport and we scroll to end
-        //series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
-        series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
-
-    }
-
-}
