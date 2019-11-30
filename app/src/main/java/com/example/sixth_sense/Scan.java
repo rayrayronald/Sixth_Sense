@@ -12,6 +12,7 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.sql.*;
 import java.util.Random;
 
 
@@ -56,6 +57,43 @@ public class Scan extends AppCompatActivity {
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Potential (V)");
         graph.getGridLabelRenderer().setVerticalAxisTitle("Current (A)");
 
+
+        String dbUrl = "jdbc:postgresql://ec2-46-137-120-243.eu-west-1.compute.amazonaws.com:5432/daku93qk12ot3o?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&user=ejzndyzesfoyqk&password=e16216b71f70ac9b098db783817afd90c45b71a0b4c117590985968f9ea31bb8";
+        try {
+            // Registers the driver
+            Class.forName("org.postgresql.Driver");
+
+            Connection conn= DriverManager.getConnection(dbUrl);
+
+            Statement s=conn.createStatement();
+            String sqlStr = "create table patients (\n" +
+                    "                          id SERIAL PRIMARY KEY,\n" +
+                    "                          familyname varchar(128) NOT NULL,\n" +
+                    "                          givenname varchar(128) NOT NULL,\n" +
+                    "                          phonenumber varchar(32)\n" +
+                    ");\n" +
+                    "\n" +
+                    "\n" +
+                    "insert into patients (familyname,givenname,phonenumber) values('Jones','Bill','07755678899');\n" +
+                    "insert into patients (familyname,givenname,phonenumber) values('Smith','John','07755671111');\n" +
+                    "insert into patients (familyname,givenname,phonenumber) values('Mark','Wright','07755678899');\n" +
+                    "\n";
+
+            s.execute (sqlStr);
+            sqlStr = "SELECT * FROM patients WHERE id>1;";
+            ResultSet rset=s.executeQuery(sqlStr);
+            while(rset.next()){
+                Log.d("66666666666666666666666", rset.getInt("id")+" "+ rset.getString("familyname"));
+                textView.setText(rset.getString("familyname"));
+
+            }
+            rset.close();
+            s.close();
+            conn.close();
+        }
+        catch (Exception e){
+            Log.d("66666666666666666666666",e.getMessage());
+        }
     }
     @Override
     protected void onResume() {

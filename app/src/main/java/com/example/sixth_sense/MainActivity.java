@@ -69,4 +69,14 @@ public class MainActivity extends AppCompatActivity {
         sndintent.putExtra(EXTRA_MESSAGE, message);
         startActivity(sndintent);
     }
+
+
+    /** Called when the user taps the Settings button */
+    public void NFC_con(View view) {
+        Intent sndintent = new Intent(this, SubSettingActivity.class);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String message = editText.getText().toString();
+        sndintent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(sndintent);
+    }
 }
