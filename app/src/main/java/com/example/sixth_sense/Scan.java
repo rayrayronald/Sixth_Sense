@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -56,7 +57,11 @@ public class Scan extends AppCompatActivity {
         viewport.setScalable(true);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Potential (V)");
         graph.getGridLabelRenderer().setVerticalAxisTitle("Current (A)");
-
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         String dbUrl = "jdbc:postgresql://ec2-46-137-120-243.eu-west-1.compute.amazonaws.com:5432/daku93qk12ot3o?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&user=ejzndyzesfoyqk&password=e16216b71f70ac9b098db783817afd90c45b71a0b4c117590985968f9ea31bb8";
         try {
@@ -66,14 +71,14 @@ public class Scan extends AppCompatActivity {
             Connection conn= DriverManager.getConnection(dbUrl);
 
             Statement s=conn.createStatement();
-            String sqlStr = "create table patients (\n" +
+            String sqlStr = /*"create table patients (\n" +
                     "                          id SERIAL PRIMARY KEY,\n" +
                     "                          familyname varchar(128) NOT NULL,\n" +
                     "                          givenname varchar(128) NOT NULL,\n" +
                     "                          phonenumber varchar(32)\n" +
                     ");\n" +
                     "\n" +
-                    "\n" +
+                    "\n" +*/
                     "insert into patients (familyname,givenname,phonenumber) values('Jones','Bill','07755678899');\n" +
                     "insert into patients (familyname,givenname,phonenumber) values('Smith','John','07755671111');\n" +
                     "insert into patients (familyname,givenname,phonenumber) values('Mark','Wright','07755678899');\n" +
@@ -92,7 +97,8 @@ public class Scan extends AppCompatActivity {
             conn.close();
         }
         catch (Exception e){
-            Log.d("66666666666666666666666",e.getMessage());
+            String stackTrace = Log.getStackTraceString(e);
+            Log.d("66666666666666666666666",stackTrace);
         }
     }
     @Override
