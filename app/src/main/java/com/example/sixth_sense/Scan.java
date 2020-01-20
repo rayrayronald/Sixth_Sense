@@ -71,11 +71,17 @@ public class Scan extends AppCompatActivity {
             Connection conn= DriverManager.getConnection(dbUrl);
 
             Statement s=conn.createStatement();
-            String sqlStr = /*"create table patients (\n" +
+            String sqlStr = /*"create table scans (\n" +
                     "                          id SERIAL PRIMARY KEY,\n" +
-                    "                          familyname varchar(128) NOT NULL,\n" +
-                    "                          givenname varchar(128) NOT NULL,\n" +
-                    "                          phonenumber varchar(32)\n" +
+                    "                          time varchar(32) NOT NULL,\n" +
+                    "                          location varchar(32) NOT NULL,\n" +
+                    "                          nfcid varchar(64)\n" +
+                    "                          nfcdata varchar(64)\n" +
+
+
+
+                    SELECT * FROM scans WHERE nfcid = tag
+
                     ");\n" +
                     "\n" +
                     "\n" +*/
@@ -98,7 +104,7 @@ public class Scan extends AppCompatActivity {
         }
         catch (Exception e){
             String stackTrace = Log.getStackTraceString(e);
-            Log.d("66666666666666666666666",stackTrace);
+            Log.d("DEBUG!",stackTrace);
         }
     }
     @Override
