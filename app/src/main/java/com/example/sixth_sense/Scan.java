@@ -71,27 +71,7 @@ public class Scan extends AppCompatActivity {
             Connection conn= DriverManager.getConnection(dbUrl);
 
             Statement s=conn.createStatement();
-            String sqlStr = /*"create table scans (\n" +
-                    "                          id SERIAL PRIMARY KEY,\n" +
-                    "                          time varchar(32) NOT NULL,\n" +
-                    "                          location varchar(32) NOT NULL,\n" +
-                    "                          nfcid varchar(64)\n" +
-                    "                          nfcdata varchar(64)\n" +
-
-
-
-                    SELECT * FROM scans WHERE nfcid = tag
-
-                    ");\n" +
-                    "\n" +
-                    "\n" +*/
-                    "insert into patients (familyname,givenname,phonenumber) values('Jones','Bill','07755678899');\n" +
-                    "insert into patients (familyname,givenname,phonenumber) values('Smith','John','07755671111');\n" +
-                    "insert into patients (familyname,givenname,phonenumber) values('Mark','Wright','07755678899');\n" +
-                    "\n";
-
-            s.execute (sqlStr);
-            sqlStr = "SELECT * FROM patients WHERE id>1;";
+            String sqlStr = "SELECT * FROM patients WHERE id>1;";
             ResultSet rset=s.executeQuery(sqlStr);
             while(rset.next()){
                 Log.d("66666666666666666666666", rset.getInt("id")+" "+ rset.getString("familyname"));
