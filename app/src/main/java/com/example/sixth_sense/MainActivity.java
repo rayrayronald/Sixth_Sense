@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,11 +33,46 @@ public class MainActivity extends AppCompatActivity {
     public String NAME_3_2 = "VAL 3.2";*/
     public static String NAMES[] = {"VAL 1.1","VAL 1.2","VAL 1.3","VAL 1.4","VAL 2.1","VAL 2.2","VAL 3.1","VAL 4.1"};
     public static double VALUES[] = {1.1,1.2,1.3,1.4,2.1,2.2,3.1,4.1};
+    private static Database db = new Database();
+    private static User P = new User();
+    // Getters
+    public static Database getDb() {
+        return db;
+    }
+    public static User getP() {
+        return P;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Check device system settings to see if user is logged in
+        if (SaveSharedPreference.getUserName(MainActivity.this).length() == 0) {
+            // Prompts log in window
+            Intent intent = new Intent(MainActivity.this, Log_in.class);
+            startActivity(intent);
+        } else {
+            // Continues app activity
+        }
+
+        // Connects Database and displays relevant parent & child info
+        if (db.connect()) {
+            // Passes on Statement s to parent
+            P.setS(db.getS());
+            // Logs in with saved account credentials to retrieve data
+            try {
+
+                P.login(SaveSharedPreference.getUserName(MainActivity.this), SaveSharedPreference.getPassword(MainActivity.this));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            //display_child_info(child_selected);
+
+        } else {
+            Toast.makeText(this, "CANNOT CONNECT TO DATABASE", Toast.LENGTH_LONG).show();
+        }
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy_HH:mm");
         Date date = new Date();
