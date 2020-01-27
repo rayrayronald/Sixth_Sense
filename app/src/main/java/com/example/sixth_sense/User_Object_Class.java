@@ -2,7 +2,7 @@ package com.example.sixth_sense;
 
 import java.sql.*;
 
-public class User {
+public class User_Object_Class {
 
 
     // Initialises objects
@@ -55,7 +55,7 @@ public class User {
         return CID_3;
     }
 
-    public User() {}
+    public User_Object_Class() {}
 
 
     // Retrieves info associated with parent login credentials and return state to main class

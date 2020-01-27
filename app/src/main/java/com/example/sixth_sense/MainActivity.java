@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
@@ -33,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
     public String NAME_3_2 = "VAL 3.2";*/
     public static String NAMES[] = {"VAL 1.1","VAL 1.2","VAL 1.3","VAL 1.4","VAL 2.1","VAL 2.2","VAL 3.1","VAL 4.1"};
     public static double VALUES[] = {1.1,1.2,1.3,1.4,2.1,2.2,3.1,4.1};
-    private static Database db = new Database();
-    private static User P = new User();
+    private static Database_Object_Class db = new Database_Object_Class();
+    private static User_Object_Class P = new User_Object_Class();
     // Getters
-    public static Database getDb() {
+    public static Database_Object_Class getDb() {
         return db;
     }
-    public static User getP() {
+    public static User_Object_Class getP() {
         return P;
     }
 
@@ -49,22 +48,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Check device system settings to see if user is logged in
-        if (SaveSharedPreference.getUserName(MainActivity.this).length() == 0) {
+        if (User_Account_Class.getUserName(MainActivity.this).length() == 0) {
             // Prompts log in window
-            Intent intent = new Intent(MainActivity.this, Log_in.class);
+            Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
             startActivity(intent);
         } else {
             // Continues app activity
         }
 
-        // Connects Database and displays relevant parent & child info
+        // Connects Database_Object_Class and displays relevant parent & child info
         if (db.connect()) {
             // Passes on Statement s to parent
             P.setS(db.getS());
             // Logs in with saved account credentials to retrieve data
             try {
 
-                P.login(SaveSharedPreference.getUserName(MainActivity.this), SaveSharedPreference.getPassword(MainActivity.this));
+                P.login(User_Account_Class.getUserName(MainActivity.this), User_Account_Class.getPassword(MainActivity.this));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user taps the Connect button */
     public void connect(View view) {
-        Intent intent = new Intent(this, Scan.class);
+        Intent intent = new Intent(this, Scan_Activity.class);
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
