@@ -18,7 +18,7 @@ import java.util.Random;
 
 
 
-public class Scan extends AppCompatActivity {
+public class Scan_Activity extends AppCompatActivity {
 
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;

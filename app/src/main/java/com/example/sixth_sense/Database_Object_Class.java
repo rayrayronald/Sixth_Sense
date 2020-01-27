@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.sql.*;
 
-public class Database {
+public class Database_Object_Class {
 
 
     // Initialises variables to connect to database

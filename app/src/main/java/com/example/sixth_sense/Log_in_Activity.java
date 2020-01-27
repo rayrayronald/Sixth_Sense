@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.sql.SQLException;
 
-public class Log_in extends AppCompatActivity {
+public class Log_in_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +28,9 @@ public class Log_in extends AppCompatActivity {
             if (MainActivity.getP().login(username_string, password_string)){
                 // Save credentials to system file
                 Toast.makeText(this, "LOGGED IN: " + username_string, Toast.LENGTH_SHORT).show();
-                SaveSharedPreference.setUserName(Log_in.this,username_string);
-                SaveSharedPreference.setPassword(Log_in.this,password_string);
-                Intent intent = new Intent(Log_in.this, MainActivity.class);
+                User_Account_Class.setUserName(Log_in_Activity.this,username_string);
+                User_Account_Class.setPassword(Log_in_Activity.this,password_string);
+                Intent intent = new Intent(Log_in_Activity.this, MainActivity.class);
                 startActivity(intent);
             } else {
                 Toast.makeText(this,"WRONG LOG IN" , Toast.LENGTH_SHORT).show();
