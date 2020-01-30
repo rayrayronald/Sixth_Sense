@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             P.setS(db.getS());
             // Logs in with saved account credentials to retrieve data
             try {
-
                 P.login(User_Account_Class.getUserName(MainActivity.this), User_Account_Class.getPassword(MainActivity.this));
             } catch (SQLException e) {
                 e.printStackTrace();

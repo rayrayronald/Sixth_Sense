@@ -88,14 +88,9 @@ public class User_Object_Class {
     }
 
     // Create answers for new date
-    public void create(String answers, String image) throws SQLException {
+    public void create(String TimeStamp, String geo, String answers, String image) throws SQLException {
         String sqlStr;
-        // PostgrSQL command syntax change depending on image value
-        if (image == null) {
-            sqlStr = "INSERT INTO public.dates(cid, pid, date, record, image) VALUES (\'"+ 1 +"\',\'"+ getParent_ID() +"\',\'"+ 1 +"\',\'"+ answers +"\'," + image + ");";
-        } else  {
-            sqlStr = "INSERT INTO public.dates(cid, pid, date, record, image) VALUES (\'"+ 1 +"\',\'"+ getParent_ID() +"\',\'"+ 1 +"\',\'"+ answers +"\',\'" + image + "\');";
-        }
+        sqlStr = "INSERT INTO DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA) VALUES ('1',\'"+ TimeStamp +"\',\'"+ geo +"\',\'"+ geo +"\',\'"+ answers +"\',\'" + image + "\');";
         s.execute (sqlStr);
     }
 

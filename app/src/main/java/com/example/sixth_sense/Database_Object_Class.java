@@ -58,13 +58,13 @@ public class Database_Object_Class {
                     "                          TIME_STAMP varchar(32),\n" +
                     "                          LATITUDE varchar(32),\n" +
                     "                          LONGITUDE varchar(32),\n" +
-                    "                          NFC_ID varchar(64)\n" +
-                    "                          SCAN_DATA varchar(1024)\n" +
+                    "                          NFC_ID varchar(64),\n" +
+                    "                          SCAN_DATA varchar(8192),\n" +
                     "                          BOOLEAN varchar(8)\n" +
 
                     ");\n" +
 
-                "insert into DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA) values('1','+1.0000','-1.0000','0xF213','HELLOW world!','FLASE');\n" +
+                "insert into DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA) values('1','12:00'+1.0000','-1.0000','0xF213','HELLOW world!','FALSE');\n" +
                 "\n";
 
         try {
@@ -77,7 +77,7 @@ public class Database_Object_Class {
 
     public void constructDB_USER()  {
 
-        String sqlStr = "create table USER (\n" +
+        String sqlStr = "create table USERS (\n" +
                 "                          ID SERIAL PRIMARY KEY,\n" +
                 "                          FIRST_NAME varchar(32),\n" +
                 "                          LAST_NAME varchar(32),\n" +
@@ -86,7 +86,7 @@ public class Database_Object_Class {
                 "                          ACCOUNT_TYPE varchar(32)\n" +
                 ");\n" +
 
-                "insert into USER (FIRST_NAME,LAST_NAME,EMAIL,PASSWORD,ACCOUNT_TYPE) values('John','Doe','John@ic.com','password','ADMIN');\n" +
+                "insert into USERS (FIRST_NAME,LAST_NAME,EMAIL,PASSWORD,ACCOUNT_TYPE) values('John','Doe','John@ic.com','password','ADMIN');\n" +
                 "\n";
 
         try {
