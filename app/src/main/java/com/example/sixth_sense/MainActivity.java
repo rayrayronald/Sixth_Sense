@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             P.setS(db.getS());
             // Logs in with saved account credentials to retrieve data
             try {
-
                 P.login(User_Account_Class.getUserName(MainActivity.this), User_Account_Class.getPassword(MainActivity.this));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -103,18 +102,16 @@ public class MainActivity extends AppCompatActivity {
     public void SubSet(View view) {
         Intent sndintent = new Intent(this, SubSettingActivity.class);
         EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        sndintent.putExtra(EXTRA_MESSAGE, message);
         startActivity(sndintent);
     }
 
 
     /** Called when the user taps the Settings button */
-    public void NFC_con(View view) {
-        Intent sndintent = new Intent(this, SubSettingActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        sndintent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(sndintent);
+    public void Log_Off(View view) {
+        // Updates device system setting
+        User_Account_Class.setUserName(MainActivity.this, "0");
+        Toast.makeText(this, "Logged off", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
+        startActivity(intent);
     }
 }

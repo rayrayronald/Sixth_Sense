@@ -54,14 +54,17 @@ public class Database_Object_Class {
 
         String sqlStr = "create table DATA (\n" +
                     "                          ID SERIAL PRIMARY KEY,\n" +
+                    "                          USER_ID varchar(32),\n" +
                     "                          TIME_STAMP varchar(32),\n" +
                     "                          LATITUDE varchar(32),\n" +
                     "                          LONGITUDE varchar(32),\n" +
-                    "                          NFC_ID varchar(64)\n" +
-                    "                          SCAN_DATA varchar(1024)\n" +
+                    "                          NFC_ID varchar(64),\n" +
+                    "                          SCAN_DATA varchar(8192),\n" +
+                    "                          BOOLEAN varchar(8)\n" +
+
                     ");\n" +
 
-                "insert into DATA (TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA) values('+1.0000','-1.0000','0xF213','HELLOW world!);\n" +
+                "insert into DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA) values('1','12:00'+1.0000','-1.0000','0xF213','HELLOW world!','FALSE');\n" +
                 "\n";
 
         try {
@@ -74,15 +77,16 @@ public class Database_Object_Class {
 
     public void constructDB_USER()  {
 
-        String sqlStr = "create table USER (\n" +
+        String sqlStr = "create table USERS (\n" +
                 "                          ID SERIAL PRIMARY KEY,\n" +
-                "                          FIRST NAME varchar(32),\n" +
-                "                          LAST NAME varchar(32),\n" +
+                "                          FIRST_NAME varchar(32),\n" +
+                "                          LAST_NAME varchar(32),\n" +
                 "                          EMAIL varchar(32),\n" +
+                "                          PASSWORD varchar(32),\n" +
                 "                          ACCOUNT_TYPE varchar(32)\n" +
                 ");\n" +
 
-                "insert into DATA (TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA) values('+1.0000','-1.0000','0xF213','HELLOW world!);\n" +
+                "insert into USERS (FIRST_NAME,LAST_NAME,EMAIL,PASSWORD,ACCOUNT_TYPE) values('John','Doe','John@ic.com','password','ADMIN');\n" +
                 "\n";
 
         try {

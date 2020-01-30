@@ -9,12 +9,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.opencsv.CSVWriter;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.sixth_sense.MainActivity.NAMES;
 import static com.example.sixth_sense.MainActivity.VALUES;
@@ -59,6 +64,8 @@ public class DisplayMessageActivity extends AppCompatActivity {
                 }
             }
         }
+
+
     }
 
     public void load(View v) {
