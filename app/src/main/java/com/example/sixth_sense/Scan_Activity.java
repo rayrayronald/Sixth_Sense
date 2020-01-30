@@ -39,7 +39,7 @@ public class Scan_Activity extends AppCompatActivity {
     CSVWriter writer;
     List<String[]> data = new ArrayList<String[]>();
     String TimeStamp;
-    String CSV_String;
+    String CSV_String = "";
 
 
 
