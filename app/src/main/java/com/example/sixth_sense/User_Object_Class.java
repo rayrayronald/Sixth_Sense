@@ -88,11 +88,34 @@ public class User_Object_Class {
     }
 
     // Create answers for new date
-    public void create(String TimeStamp, String geo, String answers, String image) throws SQLException {
+    public void create(String TimeStamp, String geo, String answers, String image, Boolean Virus) throws SQLException {
         String sqlStr;
-        sqlStr = "INSERT INTO DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA) VALUES ('1',\'"+ TimeStamp +"\',\'"+ geo +"\',\'"+ geo +"\',\'"+ answers +"\',\'" + image + "\');";
+        sqlStr = "INSERT INTO DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA,BOOLEAN) VALUES ('1',\'"+ TimeStamp +"\',\'"+ geo +"\',\'"+ geo +"\',\'"+ answers +"\',\'" + image + "\',\'" + Virus + "\');";
         s.execute (sqlStr);
     }
+
+    // Create answers for new date
+    public String[] getHistory() throws SQLException {
+        String CSV[] = new String[64];
+        String File_name = "";
+        int i = 0;
+        try {
+            String sqlStr = "SELECT * FROM DATA WHERE USER_ID = '1';";
+            ResultSet rset=s.executeQuery(sqlStr);
+            while(rset.next()){
+                File_name = rset.getString("TIME_STAMP");
+
+
+                CSV[i] = rset.getString("SCAN_DATA");
+                i++;
+            }
+            rset.close();
+        }
+        catch (Exception e){
+        }
+        return CSV;
+    }
+
 
 
 }
