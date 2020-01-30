@@ -6,14 +6,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 
@@ -23,8 +34,12 @@ public class Scan_Activity extends AppCompatActivity {
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
-    private double[]  x_array = new double[300];
-    private double[]  y_array = new double[300];
+    private double y = 0;
+    String csv;
+    CSVWriter writer;
+    List<String[]> data = new ArrayList<String[]>();
+    String TimeStamp;
+    String CSV_String;
 
 
 
@@ -40,6 +55,11 @@ public class Scan_Activity extends AppCompatActivity {
         // Capture the layout's TextView and set the string as its text
         TextView textView = findViewById(R.id.textView12);
         textView.setText(message);
+
+        // Get time stamp
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy_HH:mm");
+        java.util.Date date = new Date();
+        TimeStamp = formatter.format(date);
 
         // we get graph view instance
         GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -62,30 +82,16 @@ public class Scan_Activity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
-        String dbUrl = "jdbc:postgresql://ec2-46-137-120-243.eu-west-1.compute.amazonaws.com:5432/daku93qk12ot3o?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&user=ejzndyzesfoyqk&password=e16216b71f70ac9b098db783817afd90c45b71a0b4c117590985968f9ea31bb8";
+        // Saves CSV
         try {
-            // Registers the driver
-            Class.forName("org.postgresql.Driver");
-
-            Connection conn= DriverManager.getConnection(dbUrl);
-
-            Statement s=conn.createStatement();
-            String sqlStr = "SELECT * FROM patients WHERE id>1;";
-            ResultSet rset=s.executeQuery(sqlStr);
-            while(rset.next()){
-                Log.d("66666666666666666666666", rset.getInt("id")+" "+ rset.getString("familyname"));
-                textView.setText(rset.getString("familyname"));
-
-            }
-            rset.close();
-            s.close();
-            conn.close();
+            csv = getFilesDir() + "/exe.csv";
+            writer = new CSVWriter(new FileWriter(csv));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (Exception e){
-            String stackTrace = Log.getStackTraceString(e);
-            Log.d("DEBUG!",stackTrace);
-        }
+
     }
     @Override
     protected void onResume() {
@@ -107,10 +113,18 @@ public class Scan_Activity extends AppCompatActivity {
 
                     // sleep to slow down the add of entries
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         // manage error ...
                     }
+                }
+                compileCSV();
+                try {
+                    String location = "1,2";
+                    String NFC_ID = "0x111";
+                    MainActivity.getP().create(TimeStamp, location,NFC_ID, CSV_String);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -120,12 +134,63 @@ public class Scan_Activity extends AppCompatActivity {
     private void addEntry() {
         // here, we choose to display max 10 points on the viewport and we scroll to end
         //series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
-        series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
-
+        y = RANDOM.nextDouble() * 10d;
+        series.appendData(new DataPoint(lastX, y), false, 50);
+        data.add(new String[] {String.valueOf(lastX),String.valueOf(y)});
+        lastX++;
     }
+    private void compileCSV() {
+        try {
+            writer.writeAll(data);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        try {
+            String csvFilename = getFilesDir() + "/exe.csv";
+            CSVReader csvReader = null;
+            csvReader = new CSVReader(new FileReader(csvFilename));
+            String[] row = null;
+            while((row = csvReader.readNext()) != null) {
+                System.out.println(row[0]
+                        + " , " + row[1]);
+                CSV_String = CSV_String + row[0] + "," + row[1] + "\n";
+            }
+            csvReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
+
+
+        /*String dbUrl = "jdbc:postgresql://ec2-46-137-120-243.eu-west-1.compute.amazonaws.com:5432/daku93qk12ot3o?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&user=ejzndyzesfoyqk&password=e16216b71f70ac9b098db783817afd90c45b71a0b4c117590985968f9ea31bb8";
+        try {
+            // Registers the driver
+            Class.forName("org.postgresql.Driver");
+
+            Connection conn= DriverManager.getConnection(dbUrl);
+
+            Statement s=conn.createStatement();
+            String sqlStr = "SELECT * FROM patients WHERE id>1;";
+            ResultSet rset=s.executeQuery(sqlStr);
+            while(rset.next()){
+                Log.d("66666666666666666666666", rset.getInt("id")+" "+ rset.getString("familyname"));
+                textView.setText(rset.getString("familyname"));
+
+            }
+            rset.close();
+            s.close();
+            conn.close();
+        }
+        catch (Exception e){
+            String stackTrace = Log.getStackTraceString(e);
+            Log.d("DEBUG!",stackTrace);
+        }*/
 
 
 
