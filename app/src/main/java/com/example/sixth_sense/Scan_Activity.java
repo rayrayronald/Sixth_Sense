@@ -57,7 +57,7 @@ public class Scan_Activity extends AppCompatActivity {
         textView.setText(message);
 
         // Get time stamp
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy_HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy_HH:mm");
         java.util.Date date = new Date();
         TimeStamp = formatter.format(date);
 
@@ -77,14 +77,13 @@ public class Scan_Activity extends AppCompatActivity {
         viewport.setScalable(true);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Potential (V)");
         graph.getGridLabelRenderer().setVerticalAxisTitle("Current (A)");
-        if (android.os.Build.VERSION.SDK_INT > 9)
-        {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
         // Saves CSV
         try {
-            csv = getFilesDir() + "/exe.csv";
+            csv = getFilesDir() + "/" + TimeStamp + ".csv";
             writer = new CSVWriter(new FileWriter(csv));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -118,11 +117,14 @@ public class Scan_Activity extends AppCompatActivity {
                         // manage error ...
                     }
                 }
+                // Saves compiled CSV onto device storage
                 compileCSV();
+                // Uploads CSV onto Database with fake data
                 try {
                     String location = "1,2";
                     String NFC_ID = "0x111";
-                    MainActivity.getP().create(TimeStamp, location,NFC_ID, CSV_String);
+                    Boolean Virus = false;
+                    MainActivity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -153,8 +155,7 @@ public class Scan_Activity extends AppCompatActivity {
             csvReader = new CSVReader(new FileReader(csvFilename));
             String[] row = null;
             while((row = csvReader.readNext()) != null) {
-                System.out.println(row[0]
-                        + " , " + row[1]);
+                System.out.println(row[0] + " , " + row[1]);
                 CSV_String = CSV_String + row[0] + "," + row[1] + "\n";
             }
             csvReader.close();
