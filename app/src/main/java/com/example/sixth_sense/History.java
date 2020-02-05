@@ -21,8 +21,30 @@ public class History extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        //////////////////////////////////////////////
+        // Checks if data is available on local device storage
+        //////////////////////////////////////////////
 
-        // Access device stored CSV
+
+
+        // Access Database stored CSV if data is missing locally
+        try {
+            String[] CSV = MainActivity.getP().getHistory();
+            Log.v("Tag", "FOLLOWING DATA HAS BEEN RETRIEVED FROM DATABASE");
+            for(String log : CSV) {
+                if (log != null) {
+                    Log.v("Tag", "Dataset \n"+ log);
+                }
+            }
+            Log.v("Tag", "ABOVE DATA HAS BEEN RETRIEVED FROM DATABASE");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        // Access device stored CSV and plot on graph
         /*try {
             String csvFilename = getFilesDir() + "/exe.csv";
             CSVReader csvReader = null;
@@ -37,18 +59,6 @@ public class History extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-
-        // Access Database stored CSV
-        try {
-            String[] CSV = MainActivity.getP().getHistory();
-            for(String log : CSV) {
-                if (log != null) {
-                    Log.v("Tag",log);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
 
     }
