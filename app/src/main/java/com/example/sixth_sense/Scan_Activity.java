@@ -125,6 +125,7 @@ public class Scan_Activity extends AppCompatActivity {
                     String NFC_ID = "0x111";
                     Boolean Virus = false;
                     MainActivity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
+                    System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -150,15 +151,17 @@ public class Scan_Activity extends AppCompatActivity {
         }
 
         try {
-            String csvFilename = getFilesDir() + "/exe.csv";
+            String csvFilename = getFilesDir() + "/" + TimeStamp + ".csv";
             CSVReader csvReader = null;
             csvReader = new CSVReader(new FileReader(csvFilename));
             String[] row = null;
+            System.out.println("FOLLOWING DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
             while((row = csvReader.readNext()) != null) {
                 System.out.println(row[0] + " , " + row[1]);
                 CSV_String = CSV_String + row[0] + "," + row[1] + "\n";
             }
             csvReader.close();
+            System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
