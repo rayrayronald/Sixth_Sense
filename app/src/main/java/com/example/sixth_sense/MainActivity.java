@@ -119,4 +119,9 @@ public class MainActivity extends AppCompatActivity {
         Intent sndintent = new Intent(this, History.class);
         startActivity(sndintent);
     }
+    /** Called when the user taps the History button */
+    public void NFCCC(View view) {
+        Intent haha = new Intent(this, NFC.class);
+        startActivity(haha);
+    }
 }
