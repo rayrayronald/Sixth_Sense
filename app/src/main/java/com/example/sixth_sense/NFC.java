@@ -42,7 +42,7 @@ public class NFC extends AppCompatActivity implements Listener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_nfc);
 
         initViews();
         initNFC();
