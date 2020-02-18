@@ -141,44 +141,54 @@ public class NFC extends AppCompatActivity implements Listener{
 
                 } else {
 
+                    // save messagetowrite onto local storage
+                    //String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+                    String fileName = "AnalysisData.csv";
+                    String filePath = getFilesDir() + File.separator + fileName;
+                    File f = new File(filePath);
+                    CSVWriter writer = null;
+
+                    // File exist
+                    if (f.exists() && !f.isDirectory()) {
+                        FileWriter mFileWriter = null;
+                        try {
+                            mFileWriter = new FileWriter(filePath, true);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        writer = new CSVWriter(mFileWriter);
+                    } else {
+                        try {
+                            writer = new CSVWriter(new FileWriter(filePath));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    String[] dummy = new String[1];
+
+
+                    String LastMessage = null;
+                    mNfcReadFragment = (NFCReadFragment) getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
+
 
                     for (int j = 0; j < 50; j++) {
+                        String message = mNfcReadFragment.onNfcDetected(ndef);
+                        if (message != LastMessage) {
+                            LastMessage = message;
 
-                                mNfcReadFragment = (NFCReadFragment) getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
-                                String message = mNfcReadFragment.onNfcDetected(ndef);
-                                // save messagetowrite onto local storage
-                                //String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-
-                                String fileName = "AnalysisData.csv";
-                                String filePath = getFilesDir() + File.separator + fileName;
-                                File f = new File(filePath);
-                                CSVWriter writer = null;
-
-                                // File exist
-                                if (f.exists() && !f.isDirectory()) {
-                                    FileWriter mFileWriter = null;
-                                    try {
-                                        mFileWriter = new FileWriter(filePath, true);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    writer = new CSVWriter(mFileWriter);
-                                } else {
-                                    try {
-                                        writer = new CSVWriter(new FileWriter(filePath));
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                                String[] dummy = new String[1];
-                                dummy[0] = message;
+                            dummy[0] = message;
+                            if (message != "Message not read") {
                                 writer.writeNext(dummy);
-                                try {
-                                    writer.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                            }
+                            try {
+                                writer.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            j--;
+                        }
                     }
                 }
             }
