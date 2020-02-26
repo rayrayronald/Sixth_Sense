@@ -20,8 +20,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class NFC extends AppCompatActivity implements Listener{
 
@@ -39,6 +45,12 @@ public class NFC extends AppCompatActivity implements Listener{
 
     private NfcAdapter mNfcAdapter;
 
+    String csv;
+    CSVWriter writer;
+    List<String[]> data = new ArrayList<String[]>();
+    String TimeStamp;
+    String CSV_String = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +58,7 @@ public class NFC extends AppCompatActivity implements Listener{
 
         initViews();
         initNFC();
+
     }
 
     private void initViews() {
@@ -140,32 +153,48 @@ public class NFC extends AppCompatActivity implements Listener{
                     mNfcWriteFragment.onNfcDetected(ndef, messageToWrite);
 
                 } else {
+                    int lastX = 0;
 
-                    // save messagetowrite onto local storage
-                    //String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-                    String fileName = "AnalysisData.csv";
-                    String filePath = getFilesDir() + File.separator + fileName;
-                    File f = new File(filePath);
-                    CSVWriter writer = null;
-
-                    // File exist
-                    if (f.exists() && !f.isDirectory()) {
-                        FileWriter mFileWriter = null;
-                        try {
-                            mFileWriter = new FileWriter(filePath, true);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        writer = new CSVWriter(mFileWriter);
-                    } else {
-                        try {
-                            writer = new CSVWriter(new FileWriter(filePath));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
+                    // Get time stamp
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy_HH:mm:ss");
+                    Date date = new Date();
+                    TimeStamp = formatter.format(date);
+                    // Saves CSV
+                    try {
+                        csv = getFilesDir() + "/" + TimeStamp + ".csv";
+                        writer = new CSVWriter(new FileWriter(csv));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    String[] dummy = new String[1];
+
+
+//                    // save messagetowrite onto local storage
+//                    //String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+//                    String fileName = "AnalysisData.csv";
+//                    String filePath = getFilesDir() + File.separator + fileName;
+//                    File f = new File(filePath);
+//                    CSVWriter writer = null;
+//
+//                    // File exist
+//                    if (f.exists() && !f.isDirectory()) {
+//                        FileWriter mFileWriter = null;
+//                        try {
+//                            mFileWriter = new FileWriter(filePath, true);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        writer = new CSVWriter(mFileWriter);
+//                    } else {
+//                        try {
+//                            writer = new CSVWriter(new FileWriter(filePath));
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+                    //String[] dummy = new String[1];
 
 
                     String LastMessage = null;
@@ -177,18 +206,33 @@ public class NFC extends AppCompatActivity implements Listener{
                         if (message != LastMessage) {
                             LastMessage = message;
 
-                            dummy[0] = message;
+                            //dummy[0] = message;
                             if (message != "Message not read") {
-                                writer.writeNext(dummy);
+                                //writer.writeNext(dummy);
+                                data.add(new String[] {String.valueOf(lastX),message});
+                                lastX++;
+
                             }
-                            try {
-                                writer.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
                         } else {
                             j--;
                         }
+                    }
+                    try {
+                        writer.writeAll(data);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    // Uploads CSV onto Database with fake data
+                    try {
+                        String location = "1,2";
+                        String NFC_ID = "0x111";
+                        Boolean Virus = false;
+                        MainActivity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
+                        System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                 }
             }
