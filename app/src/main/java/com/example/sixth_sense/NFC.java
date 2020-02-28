@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -201,7 +203,7 @@ public class NFC extends AppCompatActivity implements Listener{
                     mNfcReadFragment = (NFCReadFragment) getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
 
 
-                    for (int j = 0; j < 50; j++) {
+                    for (int j = 0; j < 10; j++) {
                         String message = mNfcReadFragment.onNfcDetected(ndef);
                         if (message != LastMessage) {
                             LastMessage = message;
@@ -221,6 +223,25 @@ public class NFC extends AppCompatActivity implements Listener{
                     try {
                         writer.writeAll(data);
                         writer.close();
+                        data.clear();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    try {
+                        CSVReader csvReader = null;
+                        csvReader = new CSVReader(new FileReader(csv));
+                        String[] row = null;
+                        System.out.println("FOLLOWING DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
+                        while((row = csvReader.readNext()) != null) {
+                            System.out.println(row[0] + " , " + row[1]);
+                            CSV_String = CSV_String + row[0] + "," + row[1] + "\n";
+                        }
+                        csvReader.close();
+                        System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
