@@ -250,7 +250,7 @@ public class NFC extends AppCompatActivity implements Listener{
                         String location = "1,2";
                         String NFC_ID = "0x111";
                         Boolean Virus = false;
-                        MainActivity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
+                        Log_in_Activity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
                         System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
                     } catch (SQLException e) {
                         e.printStackTrace();

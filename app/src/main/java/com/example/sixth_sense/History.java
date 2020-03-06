@@ -29,7 +29,7 @@ public class History extends AppCompatActivity {
 
         // Access Database stored CSV if data is missing locally
         try {
-            String[] CSV = MainActivity.getP().getHistory();
+            String[] CSV = Log_in_Activity.getP().getHistory();
             Log.v("Tag", "FOLLOWING DATA HAS BEEN RETRIEVED FROM DATABASE");
             for(String log : CSV) {
                 if (log != null) {

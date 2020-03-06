@@ -32,45 +32,45 @@ public class MainActivity extends AppCompatActivity {
     public String NAME_3_2 = "VAL 3.2";*/
     public static String NAMES[] = {"VAL 1.1","VAL 1.2","VAL 1.3","VAL 1.4","VAL 2.1","VAL 2.2","VAL 3.1","VAL 4.1"};
     public static double VALUES[] = {1.1,1.2,1.3,1.4,2.1,2.2,3.1,4.1};
-    private static Database_Object_Class db = new Database_Object_Class();
-    private static User_Object_Class P = new User_Object_Class();
-    // Getters
-    public static Database_Object_Class getDb() {
-        return db;
-    }
-    public static User_Object_Class getP() {
-        return P;
-    }
+//    private static Database_Object_Class db = new Database_Object_Class();
+//    private static User_Object_Class P = new User_Object_Class();
+//    // Getters
+//    public static Database_Object_Class getDb() {
+//        return db;
+//    }
+//    public static User_Object_Class getP() {
+//        return P;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Check device system settings to see if user is logged in
-        if (User_Account_Class.getUserName(MainActivity.this).length() == 0) {
-            // Prompts log in window
-            Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
-            startActivity(intent);
-        } else {
-            // Continues app activity
-        }
+//        // Check device system settings to see if user is logged in
+//        if (User_Account_Class.getUserName(MainActivity.this).length() == 0) {
+//            // Prompts log in window
+//            Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
+//            startActivity(intent);
+//        } else {
+//            // Continues app activity
+//        }
 
         // Connects Database_Object_Class and displays relevant parent & child info
-        if (db.connect()) {
-            // Passes on Statement s to parent
-            P.setS(db.getS());
-            // Logs in with saved account credentials to retrieve data
-            try {
-                P.login(User_Account_Class.getUserName(MainActivity.this), User_Account_Class.getPassword(MainActivity.this));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            //display_child_info(child_selected);
-
-        } else {
-            Toast.makeText(this, "CANNOT CONNECT TO DATABASE", Toast.LENGTH_LONG).show();
-        }
+//        if (db.connect()) {
+//            // Passes on Statement s to parent
+//            P.setS(db.getS());
+//            // Logs in with saved account credentials to retrieve data
+//            try {
+//                P.login(User_Account_Class.getUserName(MainActivity.this), User_Account_Class.getPassword(MainActivity.this));
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//            //display_child_info(child_selected);
+//
+//        } else {
+//            Toast.makeText(this, "CANNOT CONNECT TO DATABASE", Toast.LENGTH_LONG).show();
+//        }
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy_HH:mm");
         Date date = new Date();
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     public void Log_Off(View view) {
         // Updates device system setting
         User_Account_Class.setUserName(MainActivity.this, "0");
-        Toast.makeText(this, "Logged off", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Logged off ", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
         startActivity(intent);
     }
