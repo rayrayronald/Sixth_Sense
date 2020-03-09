@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,6 +104,7 @@ public class Scan_Activity extends AppCompatActivity {
             double randomY = new Random().nextDouble();
             double x = start + (randomX * (end - start));
             double y = start + (randomY * (end - start));
+            //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
             xyValueArray.add(new XYValue(x,y));
         }
         //sort it in ASC order
@@ -149,6 +151,10 @@ public class Scan_Activity extends AppCompatActivity {
             //e.printStackTrace();
         //}
 
+    }
+    public void HOME(View view) {
+        Intent scan = new Intent(this, Choose_CV.class);
+        startActivity(scan);
     }
     /*@Override
     protected void onResume() {
@@ -264,7 +270,7 @@ public class Scan_Activity extends AppCompatActivity {
 
         //set some properties
         xySeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
-        xySeries.setColor(Color.BLUE);
+        xySeries.setColor(Color.DKGRAY);
         xySeries.setSize(20f);
 
         //set Scrollable and Scaleable

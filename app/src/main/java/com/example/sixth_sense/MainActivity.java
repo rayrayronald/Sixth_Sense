@@ -81,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /** Called when the user taps start scan button */
+    public void TO_SCAN(View view) {
+        Intent scan = new Intent(this, MainActivity.class);
+        startActivity(scan);
+    }
+
     /** Called when the user taps the preset button */
     public void presets(View view) {
         Intent preintent = new Intent(this, DisplayMessageActivity.class);

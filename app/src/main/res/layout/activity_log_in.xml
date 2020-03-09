@@ -4,13 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0E4E3"
     tools:context=".Log_in_Activity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="267dp"
+        android:layout_height="199dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_back" />
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="268dp"
         android:text="Username"
         app:layout_constraintStart_toStartOf="@+id/username_input"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +30,7 @@
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="52dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="@+id/username_input"
         app:layout_constraintTop_toBottomOf="@+id/username_input" />
@@ -49,7 +60,7 @@
         android:id="@+id/textView18"
         android:layout_width="253dp"
         android:layout_height="69dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="44dp"
         android:text="The credientials for demonstration account is example_username and example_password respectively"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,9 +71,11 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/button_background"
         android:onClick="log_in_button"
         android:text="Log in"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

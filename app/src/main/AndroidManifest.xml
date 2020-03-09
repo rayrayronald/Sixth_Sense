@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Choose_CV"></activity>
+        <activity android:name=".newdesignsettings" />
+        <activity android:name=".Choose_CV" />
         <activity android:name=".NFC" />
         <activity android:name=".History" />
         <activity android:name=".Log_in_Activity">
@@ -23,14 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Scan_Activity"></activity>
+        <activity android:name=".Scan_Activity" />
         <activity
             android:name=".SubSettingActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

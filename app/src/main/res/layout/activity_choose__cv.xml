@@ -4,17 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0E4E3"
     tools:context=".Choose_CV">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="267dp"
+        android:layout_height="199dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_back" />
 
     <Button
         android:id="@+id/button11"
-        android:layout_width="179dp"
-        android:layout_height="248dp"
-        android:layout_marginTop="220dp"
+        android:layout_width="286dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="320dp"
+        android:background="@drawable/button_background"
         android:onClick="TO_MAIN"
-        android:text="BIG ASS Button"
-        android:textSize="36sp"
+        android:text="Cyclic Voltammetry"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        app:backgroundTint="#756263"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button12"
+        android:layout_width="295dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="484dp"
+        android:background="@drawable/button_background"
+        android:onClick="TO_MAIN"
+        android:text="Chronoamperometry"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        app:backgroundTint="#756263"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

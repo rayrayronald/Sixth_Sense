@@ -14,9 +14,9 @@ public class Choose_CV extends AppCompatActivity {
         setContentView(R.layout.activity_choose__cv);
     }
 
-    /** Called when the user taps the BIG button */
+    /** Called when the user taps Cyclo Voltammetry or Chronoamperometry button */
     public void TO_MAIN(View view) {
-        Intent sndintent = new Intent(this, MainActivity.class);
+        Intent sndintent = new Intent(this, newdesignsettings.class);
         startActivity(sndintent);
     }
 }
