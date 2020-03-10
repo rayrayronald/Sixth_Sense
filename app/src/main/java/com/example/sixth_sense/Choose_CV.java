@@ -21,11 +21,6 @@ public class Choose_CV extends AppCompatActivity {
         startActivity(sndintent);
     }
 
-    /** Called when the user taps DB button */
-    public void DB(View view) {
-        Intent sndintent = new Intent(this, History.class);
-        startActivity(sndintent);
-    }
 
     /** Called when the user taps the Log Off button */
     public void Log_Off(View view) {

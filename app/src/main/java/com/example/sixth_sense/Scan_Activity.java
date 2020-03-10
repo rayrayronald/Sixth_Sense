@@ -24,6 +24,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -81,6 +82,8 @@ public class Scan_Activity extends AppCompatActivity {
         // Capture the layout's TextView and set the string as its text
         TextView textView = findViewById(R.id.textView12);
         textView.setText(message);
+        TextView buttonview = findViewById(R.id.button16);
+
 
         // Get time stamp
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy_HH:mm");
@@ -99,44 +102,59 @@ public class Scan_Activity extends AppCompatActivity {
 
         xyValueArray = new ArrayList<>();
 
+        String csvFilename = getFilesDir() + "/CV.csv";
 
-        // Access device stored CSV and plot on graph
-        try {
-            String csvFilename = getFilesDir() + "/CV.csv";
-            CSVReader csvReader = null;
-            csvReader = new CSVReader(new FileReader(csvFilename));
-            String[] row = null;
-            boolean first = true;
-            while((row = csvReader.readNext()) != null) {
-                if (!first) {
-                    System.out.println(row[0] + "," + row[1]);
-                    xyValueArray.add(new XYValue(Double.valueOf(row[0]),Double.valueOf(row[1])));
-                } else {
-                    first = false;
+
+        File f = new File(csvFilename);
+        // File exist
+        if (f.exists() && !f.isDirectory()) {
+            // Access device stored CSV and plot on graph
+            try {
+                CSVReader csvReader = null;
+                csvReader = new CSVReader(new FileReader(csvFilename));
+                String[] row = null;
+                boolean first = true;
+                while((row = csvReader.readNext()) != null) {
+                    if (!first) {
+                        System.out.println(row[0] + "," + row[1]);
+                        xyValueArray.add(new XYValue(Double.valueOf(row[0]),Double.valueOf(row[1])));
+                    } else {
+                        first = false;
+                    }
+
+
                 }
-
-
+                csvReader.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            csvReader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            textView.setText("Using real data");
+            buttonview.setText("Delete");
+        } else {
+            //generate two lists of random values, one for x and one for y.
+            xyValueArray = new ArrayList<>();
+            double start = -0.1;
+            double end = 0.1;
+            for(int i = 0; i<40; i++){
+                double randomX = new Random().nextDouble();
+                double randomY = new Random().nextDouble();
+                double x = start * 10 + (randomX * (end - start) * 10);
+                double y = start + (randomY * (end - start));
+                //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
+                xyValueArray.add(new XYValue(x,y));
+            }
+            textView.setText("Using random data");
+            buttonview.setText("Import");
+
         }
 
 
-//        //generate two lists of random values, one for x and one for y.
-//        xyValueArray = new ArrayList<>();
-//        double start = -100;
-//        double end = 100;
-//        for(int i = 0; i<40; i++){
-//            double randomX = new Random().nextDouble();
-//            double randomY = new Random().nextDouble();
-//            double x = start + (randomX * (end - start));
-//            double y = start + (randomY * (end - start));
-//            //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
-//            xyValueArray.add(new XYValue(x,y));
-//        }
+
+
+
+
         //sort it in ASC order
         xyValueArray = sortArray(xyValueArray);
         //add the data to the series
@@ -181,6 +199,22 @@ public class Scan_Activity extends AppCompatActivity {
             //e.printStackTrace();
         //}
 
+    }
+
+    /** Called when the user taps DB button */
+    public void DB(View view) {
+        String csvFilename = getFilesDir() + "/CV.csv";
+        File f = new File(csvFilename);
+        // File exist
+        if (f.exists() && !f.isDirectory()) {
+            // Access device stored CSV and plot on graph
+            f.delete();
+            Intent sndintent = new Intent(this, Scan_Activity.class);
+            startActivity(sndintent);
+        } else {
+            Intent sndintent = new Intent(this, History.class);
+            startActivity(sndintent);
+        }
     }
     public void HOME(View view) {
         Intent scan = new Intent(this, Choose_CV.class);

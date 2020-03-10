@@ -2,6 +2,7 @@ package com.example.sixth_sense;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -80,7 +81,8 @@ public class History extends AppCompatActivity {
         }
 
 
-
+        Intent scan = new Intent(this, Scan_Activity.class);
+        startActivity(scan);
 
 
 
