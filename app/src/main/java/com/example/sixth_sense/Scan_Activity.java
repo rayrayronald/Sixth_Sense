@@ -88,6 +88,8 @@ public class Scan_Activity extends AppCompatActivity {
         TimeStamp = formatter.format(date);
 
 
+
+
         // NEW CODE GRAPH
 
         //declare graphview object
@@ -95,18 +97,46 @@ public class Scan_Activity extends AppCompatActivity {
 
         xySeries = new PointsGraphSeries<>();
 
-        //generate two lists of random values, one for x and one for y.
         xyValueArray = new ArrayList<>();
-        double start = -100;
-        double end = 100;
-        for(int i = 0; i<40; i++){
-            double randomX = new Random().nextDouble();
-            double randomY = new Random().nextDouble();
-            double x = start + (randomX * (end - start));
-            double y = start + (randomY * (end - start));
-            //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
-            xyValueArray.add(new XYValue(x,y));
+
+
+        // Access device stored CSV and plot on graph
+        try {
+            String csvFilename = getFilesDir() + "/CV.csv";
+            CSVReader csvReader = null;
+            csvReader = new CSVReader(new FileReader(csvFilename));
+            String[] row = null;
+            boolean first = true;
+            while((row = csvReader.readNext()) != null) {
+                if (!first) {
+                    System.out.println(row[0] + "," + row[1]);
+                    xyValueArray.add(new XYValue(Double.valueOf(row[0]),Double.valueOf(row[1])));
+                } else {
+                    first = false;
+                }
+
+
+            }
+            csvReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
+//        //generate two lists of random values, one for x and one for y.
+//        xyValueArray = new ArrayList<>();
+//        double start = -100;
+//        double end = 100;
+//        for(int i = 0; i<40; i++){
+//            double randomX = new Random().nextDouble();
+//            double randomY = new Random().nextDouble();
+//            double x = start + (randomX * (end - start));
+//            double y = start + (randomY * (end - start));
+//            //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
+//            xyValueArray.add(new XYValue(x,y));
+//        }
         //sort it in ASC order
         xyValueArray = sortArray(xyValueArray);
         //add the data to the series
@@ -271,7 +301,7 @@ public class Scan_Activity extends AppCompatActivity {
         //set some properties
         xySeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
         xySeries.setColor(Color.DKGRAY);
-        xySeries.setSize(20f);
+        xySeries.setSize(10f);
 
         //set Scrollable and Scaleable
         mScatterPlot.getViewport().setScalable(true);
@@ -281,13 +311,13 @@ public class Scan_Activity extends AppCompatActivity {
 
         //set manual x bounds
         mScatterPlot.getViewport().setYAxisBoundsManual(true);
-        mScatterPlot.getViewport().setMaxY(150);
-        mScatterPlot.getViewport().setMinY(-150);
+        mScatterPlot.getViewport().setMaxY(0.1);
+        mScatterPlot.getViewport().setMinY(-0.1);
 
         //set manual y bounds
         mScatterPlot.getViewport().setXAxisBoundsManual(true);
-        mScatterPlot.getViewport().setMaxX(150);
-        mScatterPlot.getViewport().setMinX(-150);
+        mScatterPlot.getViewport().setMaxX(1);
+        mScatterPlot.getViewport().setMinX(-1);
 
         mScatterPlot.addSeries(xySeries);
     }

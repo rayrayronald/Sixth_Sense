@@ -96,11 +96,11 @@ public class User_Object_Class {
 
     // Create answers for new date
     public String[] getHistory() throws SQLException {
-        String CSV[] = new String[64];
+        String CSV[] = new String[1];
         String File_name = "";
         int i = 0;
         try {
-            String sqlStr = "SELECT * FROM DATA WHERE USER_ID = '1';";
+            String sqlStr = "SELECT * FROM DATA WHERE USER_ID = '2';";
             ResultSet rset=s.executeQuery(sqlStr);
             while(rset.next()){
                 File_name = rset.getString("TIME_STAMP");

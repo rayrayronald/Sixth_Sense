@@ -6,15 +6,21 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class History extends AppCompatActivity {
 
     private int Chosen_data = 1;
+    String csv;
+    CSVWriter writer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +40,49 @@ public class History extends AppCompatActivity {
             for(String log : CSV) {
                 if (log != null) {
                     Log.v("Tag", "Dataset \n"+ log);
+
+
+
+                    File path = getFilesDir();
+                    File file = new File(path, "CV.csv");
+                    FileOutputStream stream = new FileOutputStream(file);
+                    try {
+                        stream.write(log.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        stream.close();
+                    }
+
+
+//                    //Saves CSV
+//                    try {
+//                        csv = getFilesDir() + "/CV.csv";
+//                        writer = new CSVWriter(new FileWriter(csv));
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//
+//                    try {
+//                        writer.writeAll(log);
+//                        writer.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
             Log.v("Tag", "ABOVE DATA HAS BEEN RETRIEVED FROM DATABASE");
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+
+
+
+
+
 
 
 

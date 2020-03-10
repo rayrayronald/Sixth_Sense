@@ -26,6 +26,12 @@ public class Log_in_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        if (db.connect()) {
+            // Passes on Statement s to parent
+            P.setS(db.getS());
+        } else {
+            Toast.makeText(this, "CANNOT CONNECT TO DATABASE", Toast.LENGTH_LONG).show();
+        }
 
         // Check device system settings to see if user is logged in
         if (User_Account_Class.getUserName(Log_in_Activity.this).length() == 1 || User_Account_Class.getUserName(Log_in_Activity.this) == "0") {
@@ -46,20 +52,7 @@ public class Log_in_Activity extends AppCompatActivity {
         TextView password_input = findViewById(R.id.password_input);
         String password_string = password_input.getText().toString();
 
-        if (db.connect()) {
-            // Passes on Statement s to parent
-            P.setS(db.getS());
-            // Logs in with saved account credentials to retrieve data
-            try {
-                P.login(User_Account_Class.getUserName(Log_in_Activity.this), User_Account_Class.getPassword(Log_in_Activity.this));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            //display_child_info(child_selected);
 
-        } else {
-            Toast.makeText(this, "CANNOT CONNECT TO DATABASE", Toast.LENGTH_LONG).show();
-        }
 
         try {
             // Check credentials with database
