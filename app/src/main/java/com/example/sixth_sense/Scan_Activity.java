@@ -46,16 +46,13 @@ public class Scan_Activity extends AppCompatActivity {
 
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
-    private int lastX = 0;
-    private double y = 0;
-    String csv;
+
+    String CSV_PATH;
     CSVWriter writer;
     List<String[]> data = new ArrayList<String[]>();
     String TimeStamp;
     String CSV_String = "";
-
-    // NEW CODE GRAPH
-    private static final String TAG = "MainActivity";
+    String TAG = "DEBUGGING_SIXTH_SENSE";
 
     //add PointsGraphSeries of DataPoint type
     PointsGraphSeries<DataPoint> xySeries;
@@ -67,26 +64,26 @@ public class Scan_Activity extends AppCompatActivity {
 
     //make xyValueArray global
     ArrayList<XYValue> xyValueArray;
-    // NEW CODE GRAPH
+
+
+    //Metadata
+    String location;
+    String NFC_ID;
+    Boolean Virus;
+    String[] Meta;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-
-        // Get the Intent that started this activity and extract the string
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-
-        // Capture the layout's TextView and set the string as its text
-        TextView textView = findViewById(R.id.textView12);
-        textView.setText(message);
         TextView buttonview = findViewById(R.id.button16);
+        TextView textView = findViewById(R.id.textView12);
+
 
 
         // Get time stamp
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy_HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy_HH:mm:ss");
         java.util.Date date = new Date();
         TimeStamp = formatter.format(date);
 
@@ -97,15 +94,12 @@ public class Scan_Activity extends AppCompatActivity {
 
         //declare graphview object
         mScatterPlot = (GraphView) findViewById(R.id.graph);
-
         xySeries = new PointsGraphSeries<>();
-
         xyValueArray = new ArrayList<>();
 
         String csvFilename = getFilesDir() + "/CV.csv";
-
-
         File f = new File(csvFilename);
+
         // File exist
         if (f.exists() && !f.isDirectory()) {
             // Access device stored CSV and plot on graph
@@ -133,6 +127,8 @@ public class Scan_Activity extends AppCompatActivity {
             textView.setText("Using real data");
             buttonview.setText("Delete");
         } else {
+            data.add(new String[] {"w","h"});
+
             //generate two lists of random values, one for x and one for y.
             xyValueArray = new ArrayList<>();
             double start = -0.1;
@@ -144,7 +140,9 @@ public class Scan_Activity extends AppCompatActivity {
                 double y = start + (randomY * (end - start));
                 //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
                 xyValueArray.add(new XYValue(x,y));
+                data.add(new String[] {String.valueOf(x),String.valueOf(y)});
             }
+            compileCSV();
             textView.setText("Using random data");
             buttonview.setText("Import");
 
@@ -166,39 +164,6 @@ public class Scan_Activity extends AppCompatActivity {
 
         createScatterPlot();
 
-        // NEW CODE GRAPH
-
-
-        // we get graph view instance
-        //GraphView graph = (GraphView) findViewById(R.id.graph);
-        // data
-        //series = new LineGraphSeries<DataPoint>();
-        //graph.addSeries(series);
-        // customize a little bit viewport
-        //Viewport viewport = graph.getViewport();
-        //viewport.setYAxisBoundsManual(true);
-        //viewport.setMinY(0);
-        //viewport.setMaxY(12);
-        //viewport.setMinX(00);
-        //viewport.setMaxX(50);
-        //viewport.setScrollable(true);
-        //viewport.setScalable(true);
-        //graph.getGridLabelRenderer().setHorizontalAxisTitle("Potential (V)");
-        //graph.getGridLabelRenderer().setVerticalAxisTitle("Current (A)");
-        //if (android.os.Build.VERSION.SDK_INT > 9) {
-            //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            //StrictMode.setThreadPolicy(policy);
-        //}
-        // Saves CSV
-        //try {
-            //csv = getFilesDir() + "/" + TimeStamp + ".csv";
-            //writer = new CSVWriter(new FileWriter(csv));
-        //} catch (FileNotFoundException e) {
-            //e.printStackTrace();
-        //} catch (IOException e) {
-            //e.printStackTrace();
-        //}
-
     }
 
     /** Called when the user taps DB button */
@@ -219,6 +184,49 @@ public class Scan_Activity extends AppCompatActivity {
     public void HOME(View view) {
         Intent scan = new Intent(this, Choose_CV.class);
         startActivity(scan);
+    }
+
+
+    private void compileCSV() {
+
+        //Saves CSV
+        try {
+            CSV_PATH = getFilesDir() + "/" + TimeStamp + ".csv";
+            writer = new CSVWriter(new FileWriter(CSV_PATH));
+            writer.writeAll(data);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(CSV_PATH));
+            String[] row = null;
+            System.out.println("FOLLOWING DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
+            while((row = csvReader.readNext()) != null) {
+                System.out.println(row[0] + " , " + row[1]);
+                CSV_String = CSV_String + row[0] + "," + row[1] + "\n";
+            }
+            csvReader.close();
+            System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Uploads CSV onto Database with fake data
+        try {
+            location = "1,2";
+            NFC_ID = "0x111";
+            Virus = false;
+            Log_in_Activity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
+            System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     /*@Override
     protected void onResume() {
@@ -247,16 +255,7 @@ public class Scan_Activity extends AppCompatActivity {
                 }
                 // Saves compiled CSV onto device storage
                 compileCSV();
-                // Uploads CSV onto Database with fake data
-                try {
-                    String location = "1,2";
-                    String NFC_ID = "0x111";
-                    Boolean Virus = false;
-                    MainActivity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
-                    System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+
             }
         }).start();
     }
@@ -270,32 +269,7 @@ public class Scan_Activity extends AppCompatActivity {
         data.add(new String[] {String.valueOf(lastX),String.valueOf(y)});
         lastX++;
     }
-    private void compileCSV() {
-        try {
-            writer.writeAll(data);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            String csvFilename = getFilesDir() + "/" + TimeStamp + ".csv";
-            CSVReader csvReader = null;
-            csvReader = new CSVReader(new FileReader(csvFilename));
-            String[] row = null;
-            System.out.println("FOLLOWING DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
-            while((row = csvReader.readNext()) != null) {
-                System.out.println(row[0] + " , " + row[1]);
-                CSV_String = CSV_String + row[0] + "," + row[1] + "\n";
-            }
-            csvReader.close();
-            System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+*/
 
 
     private void createScatterPlot() {
@@ -424,6 +398,31 @@ public class Scan_Activity extends AppCompatActivity {
 
 
 }
+
+
+///////////////// OLD CODE GRAPH///////////
+
+
+// we get graph view instance
+//GraphView graph = (GraphView) findViewById(R.id.graph);
+// data
+//series = new LineGraphSeries<DataPoint>();
+//graph.addSeries(series);
+// customize a little bit viewport
+//Viewport viewport = graph.getViewport();
+//viewport.setYAxisBoundsManual(true);
+//viewport.setMinY(0);
+//viewport.setMaxY(12);
+//viewport.setMinX(00);
+//viewport.setMaxX(50);
+//viewport.setScrollable(true);
+//viewport.setScalable(true);
+//graph.getGridLabelRenderer().setHorizontalAxisTitle("Potential (V)");
+//graph.getGridLabelRenderer().setVerticalAxisTitle("Current (A)");
+//if (android.os.Build.VERSION.SDK_INT > 9) {
+//StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//StrictMode.setThreadPolicy(policy);
+//}
 
 
 
