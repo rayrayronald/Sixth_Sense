@@ -76,6 +76,8 @@ public class Scan_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        String para = intent.getStringExtra("voltage");
         setContentView(R.layout.activity_scan);
         TextView buttonview = findViewById(R.id.button16);
         TextView textView = findViewById(R.id.textView12);
@@ -127,7 +129,7 @@ public class Scan_Activity extends AppCompatActivity {
             textView.setText("Using real data");
             buttonview.setText("Delete");
         } else {
-            data.add(new String[] {"w","h"});
+            data.add(new String[] {para,Virus.toString()});
 
             //generate two lists of random values, one for x and one for y.
             xyValueArray = new ArrayList<>();
@@ -284,27 +286,17 @@ public class Scan_Activity extends AppCompatActivity {
                         "," + dataPoint.getY() + ")");
                 //declare new series
                 onClickSeries = new PointsGraphSeries<>();
-
                 onClickSeries.appendData(new DataPoint(dataPoint.getX(),dataPoint.getY()),true, 100);
-
                 onClickSeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
-
                 onClickSeries.setColor(Color.RED);
-
                 onClickSeries.setSize(25f);
-
                 mScatterPlot.removeAllSeries();
-
                 mScatterPlot.addSeries(onClickSeries);
-
                 toastMessage("x = " + dataPoint.getX() + "\n" +
                         "y = " + dataPoint.getY() );
-
                 createScatterPlot();
-
             }
         });
-
 
         //set some properties
         xySeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
