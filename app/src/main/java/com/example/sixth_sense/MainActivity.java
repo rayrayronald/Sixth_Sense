@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
     public String NAME_3_2 = "VAL 3.2";*/
     public static String NAMES[] = {"VAL 1.1","VAL 1.2","VAL 1.3","VAL 1.4","VAL 2.1","VAL 2.2","VAL 3.1","VAL 4.1"};
     public static double VALUES[] = {1.1,1.2,1.3,1.4,2.1,2.2,3.1,4.1};
-//    private static Database_Object_Class db = new Database_Object_Class();
-//    private static User_Object_Class P = new User_Object_Class();
+//    private static Object_Database db = new Object_Database();
+//    private static Object_User P = new Object_User();
 //    // Getters
-//    public static Database_Object_Class getDb() {
+//    public static Object_Database getDb() {
 //        return db;
 //    }
-//    public static User_Object_Class getP() {
+//    public static Object_User getP() {
 //        return P;
 //    }
 
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //        // Check device system settings to see if user is logged in
-//        if (User_Account_Class.getUserName(MainActivity.this).length() == 0) {
+//        if (Class_Log_In.getUserName(MainActivity.this).length() == 0) {
 //            // Prompts log in window
 //            Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
 //            startActivity(intent);
@@ -56,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
 //            // Continues app activity
 //        }
 
-        // Connects Database_Object_Class and displays relevant parent & child info
+        // Connects Object_Database and displays relevant parent & child info
 //        if (db.connect()) {
 //            // Passes on Statement s to parent
 //            P.setS(db.getS());
 //            // Logs in with saved account credentials to retrieve data
 //            try {
-//                P.login(User_Account_Class.getUserName(MainActivity.this), User_Account_Class.getPassword(MainActivity.this));
+//                P.login(Class_Log_In.getUserName(MainActivity.this), Class_Log_In.getPassword(MainActivity.this));
 //            } catch (SQLException e) {
 //                e.printStackTrace();
 //            }
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     /** Called when the user taps the Log Off button */
     public void Log_Off(View view) {
         // Updates device system setting
-        User_Account_Class.setUserName(MainActivity.this, "0");
+        Class_Log_In.setUserName(MainActivity.this, "0");
         Toast.makeText(this, "Logged off ", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
         startActivity(intent);

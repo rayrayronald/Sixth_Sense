@@ -1,15 +1,12 @@
 package com.example.sixth_sense;
 
-/**
- * Created by User on 1/16/2017.
- */
 
-public class XYValue {
+public class Class_XYValue {
 
     private double x;
     private double y;
 
-    public XYValue(double x, double y) {
+    public Class_XYValue(double x, double y) {
         this.x = x;
         this.y = y;
     }

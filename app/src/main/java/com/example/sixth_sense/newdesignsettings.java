@@ -17,9 +17,12 @@ public class newdesignsettings extends AppCompatActivity {
 
     public void TO_SCAN(View view) {
         Intent scan = new Intent(this, Scan_Activity.class);
-        EditText editText = (EditText) findViewById(R.id.editText8);
-        String message = editText.getText().toString();
-        scan.putExtra("voltage", message);
+        EditText editText8 = (EditText) findViewById(R.id.editText8);
+        scan.putExtra("VOLTAGE", editText8.getText().toString());
+        EditText editText7 = (EditText) findViewById(R.id.editText8);
+        scan.putExtra("DELAY", editText7.getText().toString());
+        EditText editText6 = (EditText) findViewById(R.id.editText8);
+        scan.putExtra("CYCLE", editText6.getText().toString());
         startActivity(scan);
     }
 }

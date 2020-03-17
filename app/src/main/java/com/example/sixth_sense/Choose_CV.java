@@ -25,7 +25,7 @@ public class Choose_CV extends AppCompatActivity {
     /** Called when the user taps the Log Off button */
     public void Log_Off(View view) {
         // Updates device system setting
-        User_Account_Class.setUserName(this, "0");
+        Class_Log_In.setUserName(this, "0");
         Toast.makeText(this, "Logged off ", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, Log_in_Activity.class);
         startActivity(intent);

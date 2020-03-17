@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,13 +11,13 @@ import java.sql.SQLException;
 
 public class Log_in_Activity extends AppCompatActivity {
 
-    private static Database_Object_Class db = new Database_Object_Class();
-    private static User_Object_Class P = new User_Object_Class();
+    private static Object_Database db = new Object_Database();
+    private static Object_User P = new Object_User();
     // Getters
-    public static Database_Object_Class getDb() {
+    public static Object_Database getDb() {
         return db;
     }
-    public static User_Object_Class getP() {
+    public static Object_User getP() {
         return P;
     }
 
@@ -34,7 +33,7 @@ public class Log_in_Activity extends AppCompatActivity {
         }
 
         // Check device system settings to see if user is logged in
-        if (User_Account_Class.getUserName(Log_in_Activity.this).length() == 1 || User_Account_Class.getUserName(Log_in_Activity.this) == "0") {
+        if (Class_Log_In.getUserName(Log_in_Activity.this).length() == 1 || Class_Log_In.getUserName(Log_in_Activity.this) == "0") {
             // Continues app activity
         } else {
             // Prompts log in window
@@ -59,8 +58,8 @@ public class Log_in_Activity extends AppCompatActivity {
             if (getP().login(username_string, password_string)){
                 // Save credentials to system file
                 Toast.makeText(this, "LOGGED IN: " + username_string, Toast.LENGTH_SHORT).show();
-                User_Account_Class.setUserName(Log_in_Activity.this,username_string);
-                User_Account_Class.setPassword(Log_in_Activity.this,password_string);
+                Class_Log_In.setUserName(Log_in_Activity.this,username_string);
+                Class_Log_In.setPassword(Log_in_Activity.this,password_string);
                 Intent intent = new Intent(Log_in_Activity.this, Choose_CV.class);
                 startActivity(intent);
             } else {
