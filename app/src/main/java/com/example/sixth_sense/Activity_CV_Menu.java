@@ -13,6 +13,7 @@ public class Activity_CV_Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cv_menu);
+
     }
 
     /** Called when the user taps Cyclo Voltammetry or Chronoamperometry button */

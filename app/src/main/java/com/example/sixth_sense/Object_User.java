@@ -84,9 +84,9 @@ public class Object_User {
     }
 
     // Create answers for new date
-    public void create(String TimeStamp, double lat, double longi, String answers, String CSV, Boolean Virus) throws SQLException {
+    public void create(String TimeStamp, double latitude, double longitude, String ID, String CSV, Boolean Virus) throws SQLException {
         String sqlStr;
-        sqlStr = "INSERT INTO DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,NFC_ID,SCAN_DATA,BOOLEAN) VALUES (\'" + getUser_ID() + "\',\'"+ TimeStamp +"\',\'"+ lat +"\',\'"+ longi +"\',\'"+ answers +"\',\'" + CSV + "\',\'" + Virus + "\');";
+        sqlStr = "INSERT INTO DATA (USER_ID,TIME_STAMP,LATITUDE,LONGITUDE,DEVICE_ID,SCAN_DATA,BOOLEAN) VALUES (\'" + getUser_ID() + "\',\'"+ TimeStamp +"\',\'"+ latitude +"\',\'"+ longitude +"\',\'"+ ID +"\',\'" + CSV + "\',\'" + Virus + "\');";
         getS().execute (sqlStr);
     }
 

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.provider.Settings;
+import android.provider.Settings.System;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -71,10 +73,14 @@ public class Activity_Scan_Results extends AppCompatActivity {
         Intent intent = getIntent();
         setContentView(R.layout.activity_scan_results);
 
-        // Get time stamp
+        // Gets time stamp
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy_HH:mm:ss");
         java.util.Date date = new Date();
         TimeStamp = formatter.format(date);
+
+        // Gets Device Android ID
+        Hardware_ID = System.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
 
         // Declare graphview object
@@ -106,19 +112,14 @@ public class Activity_Scan_Results extends AppCompatActivity {
 
 
 
-
-
-
         try {
             CSVReader csvReader = new CSVReader(new FileReader(csvFilename));
             String[] row = null;
-            boolean first = true;
             double x,y,ran;
             while((row = csvReader.readNext()) != null) {
                 x = Double.valueOf(row[0]);
                 ran = new Random().nextDouble();
-                y = Double.valueOf(row[1]) + ran/50;
-                System.out.println(x + "," + y);
+                y = Double.valueOf(row[1]) + ran/75;
                 xyValueArray.add(new Class_XYValue(Double.valueOf(x),Double.valueOf(y)));
                 data.add(new String[] {String.valueOf(x),String.valueOf(y)});
 
@@ -142,10 +143,9 @@ public class Activity_Scan_Results extends AppCompatActivity {
         metadata.add(new String[] {"Time Delay (ms)",intent.getStringExtra("DELAY")});
         metadata.add(new String[] {"Cycles",intent.getStringExtra("CYCLE")});
         metadata.add(new String[] {"Infection", Virus.toString()});
+
+
         compileCSV();
-
-
-
 
 
 
@@ -185,13 +185,13 @@ public class Activity_Scan_Results extends AppCompatActivity {
         try {
             CSVReader csvReader = new CSVReader(new FileReader(CSV_PATH));
             String[] row = null;
-            System.out.println("FOLLOWING DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
+            //System.out.println("FOLLOWING DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
             while((row = csvReader.readNext()) != null) {
-                System.out.println(row[0] + " , " + row[1]);
+                //System.out.println(row[0] + " , " + row[1]);
                 CSV_String = CSV_String + row[0] + "," + row[1] + "\n";
             }
             csvReader.close();
-            System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
+            //System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO LOCAL DEVICE STORAGE");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -200,9 +200,8 @@ public class Activity_Scan_Results extends AppCompatActivity {
 
         // Uploads CSV onto Database with fake data
         try {
-            Hardware_ID = "0x111";
             Activity_Log_in.getUSER().create(TimeStamp, Activity_Pre_Scan_Settings.getLatitude(), Activity_Pre_Scan_Settings.getLongitude(), Hardware_ID, CSV_String, Virus);
-            System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
+            //System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -214,6 +213,9 @@ public class Activity_Scan_Results extends AppCompatActivity {
     /** Called when the user taps Refresh button */
     public void Refresh(View view) {
         Intent Refresh = new Intent(this, Activity_Scan_Results.class);
+        Refresh.putExtra("VOLTAGE", "100");
+        Refresh.putExtra("DELAY", "10");
+        Refresh.putExtra("CYCLE", "1");
         startActivity(Refresh);
     }
     public void HOME(View view) {

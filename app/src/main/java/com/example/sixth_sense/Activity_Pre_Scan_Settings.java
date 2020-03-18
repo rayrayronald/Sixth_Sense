@@ -12,9 +12,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 
 public class Activity_Pre_Scan_Settings extends AppCompatActivity implements LocationListener {
@@ -23,6 +26,7 @@ public class Activity_Pre_Scan_Settings extends AppCompatActivity implements Loc
     protected LocationManager locationManager;
     protected Context context;
     int PERMISSION_ID = 66;
+    ProgressBar simpleProgressBar;
     //Metadata
     private static double latitude;
     private static double longitude;
@@ -46,6 +50,8 @@ public class Activity_Pre_Scan_Settings extends AppCompatActivity implements Loc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_scan_settings);
+        simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
 
         if ( isLocationEnabled() && checkPermissions()) {
             // Get location
@@ -116,20 +122,47 @@ public class Activity_Pre_Scan_Settings extends AppCompatActivity implements Loc
         Log.d("Latitude","enable");
     }
 
+    private void setProgressValue(final int progress) {
 
+        // set the progress
+        simpleProgressBar.setProgress(progress);
+        // thread is used to change the progress value
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(25);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                setProgressValue(progress + 5);
+            }
+        });
+        thread.start();
+    }
 
 
 
 
 
     public void TO_SCAN(View view) {
-        Intent scan = new Intent(this, Activity_Scan_Results.class);
+        final Intent scan = new Intent(this, Activity_Scan_Results.class);
         EditText editText8 = (EditText) findViewById(R.id.editText8);
         scan.putExtra("VOLTAGE", editText8.getText().toString());
-        EditText editText7 = (EditText) findViewById(R.id.editText8);
+        EditText editText7 = (EditText) findViewById(R.id.editText7);
         scan.putExtra("DELAY", editText7.getText().toString());
-        EditText editText6 = (EditText) findViewById(R.id.editText8);
+        EditText editText6 = (EditText) findViewById(R.id.editText6);
         scan.putExtra("CYCLE", editText6.getText().toString());
-        startActivity(scan);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(scan);
+
+            }
+        }, 500);
+        setProgressValue(5);
+
     }
 }
