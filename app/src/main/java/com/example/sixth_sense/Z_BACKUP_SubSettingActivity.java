@@ -3,15 +3,14 @@ package com.example.sixth_sense;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
-/*import static com.example.sixth_sense.MainActivity.VALUE_1_1;
-import static com.example.sixth_sense.MainActivity.NAME_1_1;*/
-import static com.example.sixth_sense.MainActivity.NAMES;
-import static com.example.sixth_sense.MainActivity.VALUES;
+/*import static com.example.sixth_sense.Z_BACKUP_MainActivity.VALUE_1_1;
+import static com.example.sixth_sense.Z_BACKUP_MainActivity.NAME_1_1;*/
+import static com.example.sixth_sense.Z_BACKUP_MainActivity.NAMES;
+import static com.example.sixth_sense.Z_BACKUP_MainActivity.VALUES;
 
-public class SubSettingActivity extends AppCompatActivity {
+public class Z_BACKUP_SubSettingActivity extends AppCompatActivity {
 
 
 

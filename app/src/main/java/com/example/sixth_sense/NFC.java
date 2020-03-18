@@ -8,7 +8,6 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -33,7 +31,7 @@ import java.util.List;
 
 public class NFC extends AppCompatActivity implements Listener{
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = Z_BACKUP_MainActivity.class.getSimpleName();
 
     private EditText mEtMessage;
     private Button mBtWrite;
@@ -247,10 +245,10 @@ public class NFC extends AppCompatActivity implements Listener{
                     }
                     // Uploads CSV onto Database with fake data
                     try {
-                        String location = "1,2";
+                        Double location = 1.2;
                         String NFC_ID = "0x111";
                         Boolean Virus = false;
-                        Log_in_Activity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
+                        Activity_Log_in.getUSER().create(TimeStamp, location,location,NFC_ID, CSV_String, Virus);
                         System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
                     } catch (SQLException e) {
                         e.printStackTrace();

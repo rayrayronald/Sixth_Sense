@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0E4E3"
-    tools:context=".Choose_CV">
+    tools:context=".Activity_CV_Menu">
 
     <ImageView
         android:id="@+id/imageView2"

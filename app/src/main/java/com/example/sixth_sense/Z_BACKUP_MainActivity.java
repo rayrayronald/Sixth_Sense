@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity {
+public class Z_BACKUP_MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.sixth_sense.MESSAGE";
     /*public static double VALUE_1_1 = 1.1;
     public double VALUE_1_2 = 1.2;
@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //        // Check device system settings to see if user is logged in
-//        if (Class_Log_In.getUserName(MainActivity.this).length() == 0) {
+//        if (Class_Log_In.getUserName(Z_BACKUP_MainActivity.this).length() == 0) {
 //            // Prompts log in window
-//            Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
+//            Intent intent = new Intent(Z_BACKUP_MainActivity.this, Activity_Log_in.class);
 //            startActivity(intent);
 //        } else {
 //            // Continues app activity
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //            P.setS(db.getS());
 //            // Logs in with saved account credentials to retrieve data
 //            try {
-//                P.login(Class_Log_In.getUserName(MainActivity.this), Class_Log_In.getPassword(MainActivity.this));
+//                P.login(Class_Log_In.getUserName(Z_BACKUP_MainActivity.this), Class_Log_In.getPassword(Z_BACKUP_MainActivity.this));
 //            } catch (SQLException e) {
 //                e.printStackTrace();
 //            }
@@ -82,19 +82,19 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user taps start scan button */
     public void TO_SCAN(View view) {
-        Intent scan = new Intent(this, MainActivity.class);
+        Intent scan = new Intent(this, Z_BACKUP_MainActivity.class);
         startActivity(scan);
     }
 
     /** Called when the user taps the preset button */
     public void presets(View view) {
-        Intent preintent = new Intent(this, DisplayMessageActivity.class);
+        Intent preintent = new Intent(this, Z_BACKUP_DisplayMessageActivity.class);
         startActivity(preintent);
     }
 
     /** Called when the user taps the Connect button */
     public void connect(View view) {
-        Intent intent = new Intent(this, Scan_Activity.class);
+        Intent intent = new Intent(this, Activity_Scan_Results.class);
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user taps the Settings button */
     public void SubSet(View view) {
-        Intent sndintent = new Intent(this, SubSettingActivity.class);
+        Intent sndintent = new Intent(this, Z_BACKUP_SubSettingActivity.class);
         startActivity(sndintent);
     }
 
@@ -113,18 +113,18 @@ public class MainActivity extends AppCompatActivity {
     /** Called when the user taps the Log Off button */
     public void Log_Off(View view) {
         // Updates device system setting
-        Class_Log_In.setUserName(MainActivity.this, "0");
+        Class_Log_In.setUserName(Z_BACKUP_MainActivity.this, "0");
         Toast.makeText(this, "Logged off ", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(MainActivity.this, Log_in_Activity.class);
+        Intent intent = new Intent(Z_BACKUP_MainActivity.this, Activity_Log_in.class);
         startActivity(intent);
     }
 
-    /** Called when the user taps the History button */
+    /** Called when the user taps the Class_History button */
     public void History(View view) {
-        Intent sndintent = new Intent(this, History.class);
+        Intent sndintent = new Intent(this, Class_History.class);
         startActivity(sndintent);
     }
-    /** Called when the user taps the History button */
+    /** Called when the user taps the Class_History button */
     public void NFCCC(View view) {
         Intent haha = new Intent(this, NFC.class);
         startActivity(haha);

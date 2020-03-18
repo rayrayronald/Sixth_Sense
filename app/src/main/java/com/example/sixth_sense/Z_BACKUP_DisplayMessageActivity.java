@@ -1,30 +1,24 @@
 package com.example.sixth_sense;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.widget.TextView;
 
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.opencsv.CSVWriter;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.example.sixth_sense.MainActivity.NAMES;
-import static com.example.sixth_sense.MainActivity.VALUES;
+import static com.example.sixth_sense.Z_BACKUP_MainActivity.NAMES;
+import static com.example.sixth_sense.Z_BACKUP_MainActivity.VALUES;
 
-public class DisplayMessageActivity extends AppCompatActivity {
+public class Z_BACKUP_DisplayMessageActivity extends AppCompatActivity {
     private static final String FILE_NAME = "example.txt";
 
     EditText mEditText;

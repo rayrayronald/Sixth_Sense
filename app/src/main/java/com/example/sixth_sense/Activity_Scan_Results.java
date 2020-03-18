@@ -22,6 +22,7 @@ import com.opencsv.CSVWriter;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -36,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class Scan_Activity extends AppCompatActivity {
+public class Activity_Scan_Results extends AppCompatActivity {
 
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
@@ -52,32 +53,23 @@ public class Scan_Activity extends AppCompatActivity {
 
     //add PointsGraphSeries of DataPoint type
     PointsGraphSeries<DataPoint> xySeries;
-
     PointsGraphSeries<DataPoint> onClickSeries;
-
     //create graphview object
     GraphView mScatterPlot;
-
     //make xyValueArray global
     ArrayList<Class_XYValue> xyValueArray;
 
 
     //Metadata
-    String location;
-    String NFC_ID;
+    String Hardware_ID;
     Boolean Virus;
-    String[] eta;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        setContentView(R.layout.activity_scan);
-        TextView buttonview = findViewById(R.id.button16);
-        TextView textView = findViewById(R.id.textView12);
-
-
+        setContentView(R.layout.activity_scan_results);
 
         // Get time stamp
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy_HH:mm:ss");
@@ -85,76 +77,73 @@ public class Scan_Activity extends AppCompatActivity {
         TimeStamp = formatter.format(date);
 
 
-
-
-        // NEW CODE GRAPH
-
-        //declare graphview object
+        // Declare graphview object
         mScatterPlot = (GraphView) findViewById(R.id.graph);
         xySeries = new PointsGraphSeries<>();
         xyValueArray = new ArrayList<>();
 
+        // Check if CV.csv exists and imports if not
         String csvFilename = getFilesDir() + "/CV.csv";
         File f = new File(csvFilename);
-
-        // File exist
-        if (f.exists() && !f.isDirectory()) {
-            // Access device stored CSV and plot on graph
+        if (!f.exists()) {
+            // Access Database stored CSV if data is missing locally
             try {
-                CSVReader csvReader = null;
-                csvReader = new CSVReader(new FileReader(csvFilename));
-                String[] row = null;
-                boolean first = true;
-                while((row = csvReader.readNext()) != null) {
-                    if (!first) {
-                        System.out.println(row[0] + "," + row[1]);
-                        xyValueArray.add(new Class_XYValue(Double.valueOf(row[0]),Double.valueOf(row[1])));
-                    } else {
-                        first = false;
+                String CSV = Activity_Log_in.getUSER().getHistory();
+                if (CSV != null) {
+                    FileOutputStream stream = new FileOutputStream(f);
+                    try {
+                        stream.write(CSV.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        stream.close();
                     }
-
-
                 }
-                csvReader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
-            textView.setText("Using real data");
-            buttonview.setText("Delete");
-        } else {
-
-            //generate two lists of random values, one for x and one for y.
-            xyValueArray = new ArrayList<>();
-            double start = -0.1;
-            double end = 0.1;
-            for(int i = 0; i<40; i++){
-                double randomX = new Random().nextDouble();
-                double randomY = new Random().nextDouble();
-                double x = start * 10 + (randomX * (end - start) * 10);
-                double y = start + (randomY * (end - start));
-                //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
-                xyValueArray.add(new Class_XYValue(x,y));
-                data.add(new String[] {String.valueOf(x),String.valueOf(y)});
-            }
-
-
-
-            if (new Random().nextBoolean()) {
-                Virus = true;
-            } else {
-                Virus = false;
-            }
-
-
-            metadata.add(new String[] {"Voltage Step (mV)",intent.getStringExtra("VOLTAGE"),"Time Delay (ms)",intent.getStringExtra("DELAY"),"Cycles",intent.getStringExtra("CYCLE"),Virus.toString()});
-
-            compileCSV();
-            textView.setText("Using random data");
-            buttonview.setText("Import");
-
         }
+
+
+
+
+
+
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(csvFilename));
+            String[] row = null;
+            boolean first = true;
+            double x,y,ran;
+            while((row = csvReader.readNext()) != null) {
+                x = Double.valueOf(row[0]);
+                ran = new Random().nextDouble();
+                y = Double.valueOf(row[1]) + ran/50;
+                System.out.println(x + "," + y);
+                xyValueArray.add(new Class_XYValue(Double.valueOf(x),Double.valueOf(y)));
+                data.add(new String[] {String.valueOf(x),String.valueOf(y)});
+
+            }
+            csvReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        if (new Random().nextBoolean()) {
+            Virus = true;
+        } else {
+            Virus = false;
+        }
+
+
+        metadata.add(new String[] {"Voltage Step (mV)",intent.getStringExtra("VOLTAGE")});
+        metadata.add(new String[] {"Time Delay (ms)",intent.getStringExtra("DELAY")});
+        metadata.add(new String[] {"Cycles",intent.getStringExtra("CYCLE")});
+        metadata.add(new String[] {"Infection", Virus.toString()});
+        compileCSV();
+
 
 
 
@@ -174,25 +163,8 @@ public class Scan_Activity extends AppCompatActivity {
 
     }
 
-    /** Called when the user taps DB button */
-    public void DB(View view) {
-        String csvFilename = getFilesDir() + "/CV.csv";
-        File f = new File(csvFilename);
-        // File exist
-        if (f.exists() && !f.isDirectory()) {
-            // Access device stored CSV and plot on graph
-            f.delete();
-            Intent sndintent = new Intent(this, Scan_Activity.class);
-            startActivity(sndintent);
-        } else {
-            Intent sndintent = new Intent(this, History.class);
-            startActivity(sndintent);
-        }
-    }
-    public void HOME(View view) {
-        Intent scan = new Intent(this, Choose_CV.class);
-        startActivity(scan);
-    }
+
+
 
 
     private void compileCSV() {
@@ -228,57 +200,32 @@ public class Scan_Activity extends AppCompatActivity {
 
         // Uploads CSV onto Database with fake data
         try {
-            location = "1,2";
-            NFC_ID = "0x111";
-            Virus = false;
-            Log_in_Activity.getP().create(TimeStamp, location,NFC_ID, CSV_String, Virus);
+            Hardware_ID = "0x111";
+            Activity_Log_in.getUSER().create(TimeStamp, Activity_Pre_Scan_Settings.getLatitude(), Activity_Pre_Scan_Settings.getLongitude(), Hardware_ID, CSV_String, Virus);
             System.out.println("ABOVE DATA HAS BEEN WRITTEN ONTO DATABASE");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-        // we're going to simulate real time with thread that append data to the graph
-        new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                // we add 100 new entries
-                for (int i = 0; i < 50; i++) {
-                    runOnUiThread(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            addEntry();
-                        }
-                    });
 
-                    // sleep to slow down the add of entries
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        // manage error ...
-                    }
-                }
-                // Saves compiled CSV onto device storage
-                compileCSV();
 
-            }
-        }).start();
+    /** Called when the user taps Refresh button */
+    public void Refresh(View view) {
+        Intent Refresh = new Intent(this, Activity_Scan_Results.class);
+        startActivity(Refresh);
+    }
+    public void HOME(View view) {
+        Intent Activity_CV_Menu = new Intent(this, Activity_CV_Menu.class);
+        startActivity(Activity_CV_Menu);
     }
 
-    // add random data to graph
-    private void addEntry() {
-        // here, we choose to display max 10 points on the viewport and we scroll to end
-        //series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
-        y = RANDOM.nextDouble() * 10d;
-        series.appendData(new DataPoint(lastX, y), false, 50);
-        data.add(new String[] {String.valueOf(lastX),String.valueOf(y)});
-        lastX++;
-    }
-*/
+
+
+
+
+
 
 
     private void createScatterPlot() {
@@ -380,9 +327,110 @@ public class Scan_Activity extends AppCompatActivity {
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
-
-
-
 }
 
 
+/*
+        if (f.exists() && !f.isDirectory()) {
+            // Access device stored CSV and plot on graph
+            try {
+                CSVReader csvReader = new CSVReader(new FileReader(csvFilename));
+                String[] row = null;
+                boolean first = true;
+                while((row = csvReader.readNext()) != null) {
+                    if (!first) {
+                        System.out.println(row[0] + "," + row[1]);
+                        xyValueArray.add(new Class_XYValue(Double.valueOf(row[0]),Double.valueOf(row[1])));
+                    } else {
+                        first = false;
+                    }
+
+
+                }
+                csvReader.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            textView.setText("Using real data");
+            buttonview.setText("Delete");
+        } else {
+
+            //generate two lists of random values, one for x and one for y.
+            xyValueArray = new ArrayList<>();
+            double start = -0.1;
+            double end = 0.1;
+            for(int i = 0; i<40; i++){
+                double randomX = new Random().nextDouble();
+                double randomY = new Random().nextDouble();
+                double x = start * 10 + (randomX * (end - start) * 10);
+                double y = start + (randomY * (end - start));
+                //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
+                xyValueArray.add(new Class_XYValue(x,y));
+                data.add(new String[] {String.valueOf(x),String.valueOf(y)});
+            }
+
+
+            // Sets scan background information
+
+            if (new Random().nextBoolean()) {
+                Virus = true;
+            } else {
+                Virus = false;
+            }
+
+
+            metadata.add(new String[] {"Voltage Step (mV)",intent.getStringExtra("VOLTAGE"),"Time Delay (ms)",intent.getStringExtra("DELAY"),"Cycles",intent.getStringExtra("CYCLE"),"Infection", Virus.toString()});
+
+            compileCSV();
+            textView.setText("Using random data");
+            buttonview.setText("Import");
+
+        }*/
+
+
+
+
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        // we're going to simulate real time with thread that append data to the graph
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                // we add 100 new entries
+                for (int i = 0; i < 50; i++) {
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            addEntry();
+                        }
+                    });
+
+                    // sleep to slow down the add of entries
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        // manage error ...
+                    }
+                }
+                // Saves compiled CSV onto device storage
+                compileCSV();
+
+            }
+        }).start();
+    }
+
+    // add random data to graph
+    private void addEntry() {
+        // here, we choose to display max 10 points on the viewport and we scroll to end
+        //series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
+        y = RANDOM.nextDouble() * 10d;
+        series.appendData(new DataPoint(lastX, y), false, 50);
+        data.add(new String[] {String.valueOf(lastX),String.valueOf(y)});
+        lastX++;
+    }
+*/

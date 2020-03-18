@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -13,25 +15,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".newdesignsettings" />
-        <activity android:name=".Choose_CV" />
+        <activity android:name=".Activity_Pre_Scan_Settings" />
+        <activity android:name=".Activity_CV_Menu" />
         <activity android:name=".NFC" />
-        <activity android:name=".History" />
-        <activity android:name=".Log_in_Activity">
+        <activity android:name=".Class_History" />
+        <activity android:name=".Activity_Log_in">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Scan_Activity" />
+        <activity android:name=".Activity_Scan_Results" />
         <activity
-            android:name=".SubSettingActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".Z_BACKUP_SubSettingActivity"
+            android:parentActivityName=".Z_BACKUP_MainActivity" />
         <activity
-            android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity" />
+            android:name=".Z_BACKUP_DisplayMessageActivity"
+            android:parentActivityName=".Z_BACKUP_MainActivity" />
+        <activity android:name=".Z_BACKUP_MainActivity" />
     </application>
 
 </manifest>
