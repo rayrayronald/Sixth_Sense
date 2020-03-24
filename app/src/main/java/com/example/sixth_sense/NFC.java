@@ -31,7 +31,7 @@ import java.util.List;
 
 public class NFC extends AppCompatActivity implements Listener{
 
-    public static final String TAG = Z_BACKUP_MainActivity.class.getSimpleName();
+    public static final String TAG = "DEBUG";
 
     private EditText mEtMessage;
     private Button mBtWrite;

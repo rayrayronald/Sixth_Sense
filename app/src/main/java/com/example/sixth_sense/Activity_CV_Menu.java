@@ -32,4 +32,9 @@ public class Activity_CV_Menu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        // Disable back button
+    }
+
 }

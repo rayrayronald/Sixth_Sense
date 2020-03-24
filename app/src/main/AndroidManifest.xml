@@ -19,22 +19,14 @@
         <activity android:name=".Activity_Pre_Scan_Settings" />
         <activity android:name=".Activity_CV_Menu" />
         <activity android:name=".NFC" />
-        <activity android:name=".Class_History" />
         <activity android:name=".Activity_Log_in">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Activity_Scan_Results" />
-        <activity
-            android:name=".Z_BACKUP_SubSettingActivity"
-            android:parentActivityName=".Z_BACKUP_MainActivity" />
-        <activity
-            android:name=".Z_BACKUP_DisplayMessageActivity"
-            android:parentActivityName=".Z_BACKUP_MainActivity" />
-        <activity android:name=".Z_BACKUP_MainActivity" />
     </application>
 
 </manifest>
