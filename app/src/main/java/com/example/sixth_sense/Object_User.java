@@ -62,7 +62,8 @@ public class Object_User {
         setEmail(email);
         setPassword(password);
         // Checks credentials with database
-        String sqlStr = "SELECT * FROM users WHERE email =\'" + email + "\' and password = \'" + password + "\';";
+        //String sqlStr = "SELECT * FROM users WHERE email =\'" + email + "\' and password = \'" + password + "\';";
+        String sqlStr = "SELECT * FROM users WHERE email =\'" + email + "\' and password = crypt(\'" + password + "\',password);";
         ResultSet rset = s.executeQuery(sqlStr);
         setFirst_name(null);
         while (rset.next()) {

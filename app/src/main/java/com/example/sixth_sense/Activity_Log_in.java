@@ -38,12 +38,14 @@ public class Activity_Log_in extends AppCompatActivity {
         } else {
             // Prompts log in window
             try {
-                getUSER().login(Class_Log_In.getUserName(Activity_Log_in.this), Class_Log_In.getPassword(Activity_Log_in.this));
+                if(getUSER().login(Class_Log_In.getUserName(Activity_Log_in.this), Class_Log_In.getPassword(Activity_Log_in.this))) {
+                    Intent intent = new Intent(Activity_Log_in.this, Activity_CV_Menu.class);
+                    startActivity(intent);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            Intent intent = new Intent(Activity_Log_in.this, Activity_CV_Menu.class);
-            startActivity(intent);
+
         }
 
 
