@@ -58,7 +58,7 @@ public class Object_Database {
                     "                          TIME_STAMP varchar(32),\n" +
                     "                          LATITUDE varchar(32),\n" +
                     "                          LONGITUDE varchar(32),\n" +
-                    "                          NFC_ID varchar(64),\n" +
+                    "                          DEVICE_ID varchar(64),\n" +
                     "                          SCAN_DATA varchar(8192),\n" +
                     "                          BOOLEAN varchar(8)\n" +
 
@@ -82,7 +82,7 @@ public class Object_Database {
                 "                          FIRST_NAME varchar(32),\n" +
                 "                          LAST_NAME varchar(32),\n" +
                 "                          EMAIL varchar(32),\n" +
-                "                          PASSWORD varchar(32),\n" +
+                "                          PASSWORD varchar(128),\n" +
                 "                          ACCOUNT_TYPE varchar(32)\n" +
                 ");\n" +
 

@@ -13,7 +13,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ public class Activity_Pre_Scan_Settings extends AppCompatActivity implements Loc
 
 
     protected LocationManager locationManager;
-    protected Context context;
     int PERMISSION_ID = 66;
     ProgressBar simpleProgressBar;
     //Metadata

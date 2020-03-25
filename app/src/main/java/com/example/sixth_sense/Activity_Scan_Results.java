@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.provider.Settings;
@@ -159,7 +160,15 @@ public class Activity_Scan_Results extends AppCompatActivity {
             xySeries.appendData(new DataPoint(x,y),true, 1000);
         }
 
+
         createScatterPlot();
+
+        TextView viral = findViewById(R.id.textView2);
+        if (Virus) {
+            viral.setText("Virus infection detected.");
+        } else {
+            viral.setText("No virus infection detected.");
+        }
 
     }
 
@@ -231,15 +240,10 @@ public class Activity_Scan_Results extends AppCompatActivity {
 
 
     private void createScatterPlot() {
-        Log.d(TAG, "createScatterPlot: Creating scatter plot.");
-
-
 
         xySeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Log.d(TAG, "onTap: You clicked on: (" + dataPoint.getX() +
-                        "," + dataPoint.getY() + ")");
                 //declare new series
                 onClickSeries = new PointsGraphSeries<>();
                 onClickSeries.appendData(new DataPoint(dataPoint.getX(),dataPoint.getY()),true, 100);
@@ -322,117 +326,8 @@ public class Activity_Scan_Results extends AppCompatActivity {
     }
 
 
-    /**
-     * customizable toast
-     * @param message
-     */
+
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 }
-
-
-/*
-        if (f.exists() && !f.isDirectory()) {
-            // Access device stored CSV and plot on graph
-            try {
-                CSVReader csvReader = new CSVReader(new FileReader(csvFilename));
-                String[] row = null;
-                boolean first = true;
-                while((row = csvReader.readNext()) != null) {
-                    if (!first) {
-                        System.out.println(row[0] + "," + row[1]);
-                        xyValueArray.add(new Class_XYValue(Double.valueOf(row[0]),Double.valueOf(row[1])));
-                    } else {
-                        first = false;
-                    }
-
-
-                }
-                csvReader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            textView.setText("Using real data");
-            buttonview.setText("Delete");
-        } else {
-
-            //generate two lists of random values, one for x and one for y.
-            xyValueArray = new ArrayList<>();
-            double start = -0.1;
-            double end = 0.1;
-            for(int i = 0; i<40; i++){
-                double randomX = new Random().nextDouble();
-                double randomY = new Random().nextDouble();
-                double x = start * 10 + (randomX * (end - start) * 10);
-                double y = start + (randomY * (end - start));
-                //delete previous lines of code and take in values from CSV from res folder https://stackoverflow.com/questions/19974708/reading-csv-file-in-resources-folder-android/19976110#19976110
-                xyValueArray.add(new Class_XYValue(x,y));
-                data.add(new String[] {String.valueOf(x),String.valueOf(y)});
-            }
-
-
-            // Sets scan background information
-
-            if (new Random().nextBoolean()) {
-                Virus = true;
-            } else {
-                Virus = false;
-            }
-
-
-            metadata.add(new String[] {"Voltage Step (mV)",intent.getStringExtra("VOLTAGE"),"Time Delay (ms)",intent.getStringExtra("DELAY"),"Cycles",intent.getStringExtra("CYCLE"),"Infection", Virus.toString()});
-
-            compileCSV();
-            textView.setText("Using random data");
-            buttonview.setText("Import");
-
-        }*/
-
-
-
-
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-        // we're going to simulate real time with thread that append data to the graph
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                // we add 100 new entries
-                for (int i = 0; i < 50; i++) {
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            addEntry();
-                        }
-                    });
-
-                    // sleep to slow down the add of entries
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        // manage error ...
-                    }
-                }
-                // Saves compiled CSV onto device storage
-                compileCSV();
-
-            }
-        }).start();
-    }
-
-    // add random data to graph
-    private void addEntry() {
-        // here, we choose to display max 10 points on the viewport and we scroll to end
-        //series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), false, 50);
-        y = RANDOM.nextDouble() * 10d;
-        series.appendData(new DataPoint(lastX, y), false, 50);
-        data.add(new String[] {String.valueOf(lastX),String.valueOf(y)});
-        lastX++;
-    }
-*/
