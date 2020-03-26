@@ -54,7 +54,7 @@ app⁩/⁨build⁩/outputs⁩/apk⁩/debug⁩
 
 ## Authors
 
-* **Lung Yin Hsu** - [PurpleBooth](https://github.com/rayrayronald)
-* **Julia Gimbernat** - [PurpleBooth](https://github.com/juliagimbernat)
-* **Omolade Abidoye** - [PurpleBooth](https://github.com/OmoladeAbidoye)
+* **Lung Yin Hsu** - (https://github.com/rayrayronald)
+* **Julia Gimbernat** - (https://github.com/juliagimbernat)
+* **Omolade Abidoye** - (https://github.com/OmoladeAbidoye)
 
